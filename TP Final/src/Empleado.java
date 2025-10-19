@@ -18,4 +18,29 @@ public abstract class Empleado {
         id=contador;
     }
 
+    public String getNombre() {
+        return nombre;
+    }
+
+    public String getApellido() {
+        return apellido;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public Timestamp getFechaDeNacimiento() {
+        return fechaDeNacimiento;
+    }
+
+    public String getDni() {
+        return dni;
+    }
+
+    public abstract void estadoMesa(Mesa mesa);
 }
