@@ -1,10 +1,15 @@
 public class Mesa {
-    public int numeroDeMesa;
-    public boolean disponible;
+    private int numeroDeMesa;
+    private boolean disponible;
 
     public Mesa(int numeroDeMesa, boolean disponible) {
         this.numeroDeMesa = numeroDeMesa;
         this.disponible = disponible;
+    }
+
+    public Mesa() {
+        numeroDeMesa=100;
+        disponible=true;
     }
 
     public int getNumeroDeMesa() {

@@ -1,19 +1,28 @@
-import java.sql.Timestamp;
+import java.time.LocalDate;
 
 public abstract class Empleado {
-    private final String nombre;
-    private final String apellido;
+    private String nombre;
+    private String apellido;
     private int id;
-    private static int contador;
-    private final Timestamp fechaDeNacimiento;
-    private final String dni;
+    private static int contador=0;
+    private LocalDate fechaDeNacimiento;
+    private String dni;
 
 
-    public Empleado(String nombre, String apellido, Timestamp fechaDeNacimiento, String dni) {
+    public Empleado(String nombre, String apellido, LocalDate fechaDeNacimiento, String dni) {
         this.nombre = nombre;
         this.apellido = apellido;
         this.fechaDeNacimiento = fechaDeNacimiento;
         this.dni = dni;
+        contador++;
+        id=contador;
+    }
+
+    public Empleado() {
+        nombre="a";
+        apellido="a";
+        fechaDeNacimiento=LocalDate.of(2000, 1, 1);
+        dni="a";
         contador++;
         id=contador;
     }
@@ -34,7 +43,7 @@ public abstract class Empleado {
         this.id = id;
     }
 
-    public Timestamp getFechaDeNacimiento() {
+    public LocalDate getFechaDeNacimiento() {
         return fechaDeNacimiento;
     }
 
@@ -42,5 +51,4 @@ public abstract class Empleado {
         return dni;
     }
 
-    public abstract void estadoMesa(Mesa mesa);
 }
