@@ -1,29 +1,20 @@
 package Models.Classes;
 
-import Models.Enumerators.ETipoProducto;
-
 public class ItemMenu {
-
     private String nombre;
     private double precio;
-    private ETipoProducto categoria;
+    private Enum<ETipoProducto> categoria;
     private String descripcion;
-    private int cantPedidos;
+    private int cantidadDePedidos;
 
-    public ItemMenu(String nombre, double precio, ETipoProducto categoria, String descripcion) {
+
+    public ItemMenu(String nombre, double precio, Enum<ETipoProducto> categoria,
+                    String descripcion, int cantidadDePedidos) {
         this.nombre = nombre;
         this.precio = precio;
         this.categoria = categoria;
         this.descripcion = descripcion;
-        cantPedidos=0;
-    }
-
-    public ItemMenu() {
-        nombre="a";
-        precio=1;
-        categoria=ETipoProducto.ENTRADA;
-        descripcion="a";
-        cantPedidos=0;
+        this.cantidadDePedidos = cantidadDePedidos;
     }
 
     public String getNombre() {
@@ -42,11 +33,11 @@ public class ItemMenu {
         this.precio = precio;
     }
 
-    public ETipoProducto getCategoria() {
+    public Enum<ETipoProducto> getCategoria() {
         return categoria;
     }
 
-    public void setCategoria(ETipoProducto categoria) {
+    public void setCategoria(Enum<ETipoProducto> categoria) {
         this.categoria = categoria;
     }
 
@@ -58,12 +49,15 @@ public class ItemMenu {
         this.descripcion = descripcion;
     }
 
-    public int getCantPedidos() {
-        return cantPedidos;
+    public int getCantidadDePedidos() {
+        return cantidadDePedidos;
     }
 
-    public void setCantPedidos(int cantPedidos) {
-        this.cantPedidos = cantPedidos;
+    public void setCantidadDePedidos(int cantidadDePedidos) {
+        this.cantidadDePedidos = cantidadDePedidos;
     }
+
+
+
 
 }
