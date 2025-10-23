@@ -1,5 +1,3 @@
-package Models.Classes;
-
 public class Mesa {
     private int numeroDeMesa;
     private boolean disponible;
