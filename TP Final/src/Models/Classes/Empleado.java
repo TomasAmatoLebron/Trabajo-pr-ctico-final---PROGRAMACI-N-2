@@ -1,3 +1,5 @@
+package Models.Classes;
+
 import java.time.LocalDate;
 
 public abstract class Empleado {
