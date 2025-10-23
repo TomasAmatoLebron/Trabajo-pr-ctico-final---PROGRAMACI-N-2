@@ -22,4 +22,20 @@ public class Mesa {
     public void setDisponible(boolean disponible) {
         this.disponible = disponible;
     }
+
+
+    public void modificarEstadoMesa() {
+        if(isDisponible()){
+            disponible=false;
+        }
+        else{ disponible=true
+        ;}
+
+
+
+
+
+    }
+
+
 }
