@@ -1,5 +1,3 @@
-import Models.Enumerators.ETipoProducto;
-
 public class ItemMenu {
 
     private String nombre;
