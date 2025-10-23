@@ -1,5 +1,3 @@
-package Models.Enumerators;
-
 public enum ETipoProducto {
     ENTRADA ("Entrada"),
     PRINCIPAL("Principal"),
