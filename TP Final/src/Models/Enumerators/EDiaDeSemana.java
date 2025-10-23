@@ -1,3 +1,5 @@
+package Models.Enumerators;
+
 public enum EDiaDeSemana {
     LUNES("lunes"),
     MARTES("Martes"),
