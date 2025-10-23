@@ -1,3 +1,5 @@
+package Models.Classes;
+
 import java.util.HashMap;
 
 public class ConsumoMesa {
