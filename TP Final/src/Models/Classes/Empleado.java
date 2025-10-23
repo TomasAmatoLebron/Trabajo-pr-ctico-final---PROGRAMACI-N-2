@@ -1,21 +1,21 @@
+package Models.Classes;
+
 import java.time.LocalDate;
 
 public abstract class Empleado {
     private String nombre;
     private String apellido;
-    private int id;
-    private static int contador=0;
     private LocalDate fechaDeNacimiento;
     private String dni;
+    private String password;
 
 
-    public Empleado(String nombre, String apellido, LocalDate fechaDeNacimiento, String dni) {
+    public Empleado(String nombre, String apellido, LocalDate fechaDeNacimiento, String dni, String password) {
         this.nombre = nombre;
         this.apellido = apellido;
         this.fechaDeNacimiento = fechaDeNacimiento;
         this.dni = dni;
-        contador++;
-        id=contador;
+        this.password=password;
     }
 
     public Empleado() {
@@ -23,8 +23,7 @@ public abstract class Empleado {
         apellido="a";
         fechaDeNacimiento=LocalDate.of(2000, 1, 1);
         dni="a";
-        contador++;
-        id=contador;
+        password="a";
     }
 
     public String getNombre() {
@@ -33,14 +32,6 @@ public abstract class Empleado {
 
     public String getApellido() {
         return apellido;
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
     }
 
     public LocalDate getFechaDeNacimiento() {
