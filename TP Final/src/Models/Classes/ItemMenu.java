@@ -5,18 +5,25 @@ import Models.Enumerators.ETipoProducto;
 public class ItemMenu {
     private String nombre;
     private double precio;
-    private Enum<ETipoProducto> categoria;
+    private ETipoProducto categoria;
     private String descripcion;
     private int cantidadDePedidos;
 
 
-    public ItemMenu(String nombre, double precio, Enum<ETipoProducto> categoria,
-                    String descripcion, int cantidadDePedidos) {
+    public ItemMenu(String nombre, double precio, ETipoProducto categoria, String descripcion) {
         this.nombre = nombre;
         this.precio = precio;
         this.categoria = categoria;
         this.descripcion = descripcion;
-        this.cantidadDePedidos = cantidadDePedidos;
+        this.cantidadDePedidos = 0;
+    }
+
+    public ItemMenu() {
+        nombre = "a";
+        precio = 0.0;
+        categoria = ETipoProducto.PRINCIPAL;
+        descripcion = "a";
+        cantidadDePedidos = 0;
     }
 
     public String getNombre() {
@@ -39,7 +46,7 @@ public class ItemMenu {
         return categoria;
     }
 
-    public void setCategoria(Enum<ETipoProducto> categoria) {
+    public void setCategoria(ETipoProducto categoria) {
         this.categoria = categoria;
     }
 
@@ -59,7 +66,8 @@ public class ItemMenu {
         this.cantidadDePedidos = cantidadDePedidos;
     }
 
-
-
-
+    @Override
+    public String toString() {
+        return nombre + " Precio: " + precio + " ";
+    }
 }

@@ -4,14 +4,14 @@ public class Mesa {
     private int numeroDeMesa;
     private boolean disponible;
 
-    public Mesa(int numeroDeMesa, boolean disponible) {
+    public Mesa(int numeroDeMesa) {
         this.numeroDeMesa = numeroDeMesa;
-        this.disponible = disponible;
+        disponible = true;
     }
 
     public Mesa() {
-        numeroDeMesa=100;
-        disponible=true;
+        numeroDeMesa = 100;
+        disponible = true;
     }
 
     public int getNumeroDeMesa() {
@@ -32,15 +32,11 @@ public class Mesa {
 
 
     public void modificarEstadoMesa() {
-        if(isDisponible()){
-            disponible=false;
+        if (isDisponible()) {
+            disponible = false;
+        } else {
+            disponible = true;
         }
-        else{ disponible=true
-        ;}
-
-
-
-
 
     }
 

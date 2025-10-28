@@ -1,6 +1,7 @@
 package Models.Classes;
 
 import java.time.LocalDate;
+import java.util.Objects;
 
 public abstract class Empleado {
     private String nombre;
@@ -15,7 +16,7 @@ public abstract class Empleado {
         this.apellido = apellido;
         this.fechaDeNacimiento = fechaDeNacimiento;
         this.dni = dni;
-        this.password=password;
+        this.password = password;
     }
 
     public Empleado() {
@@ -42,4 +43,14 @@ public abstract class Empleado {
         return dni;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (!(o instanceof Empleado empleado)) return false;
+        return Objects.equals(dni, empleado.dni);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(dni);
+    }
 }
