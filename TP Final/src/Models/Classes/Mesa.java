@@ -32,11 +32,7 @@ public class Mesa {
 
 
     public void modificarEstadoMesa() {
-        if (isDisponible()) {
-            disponible = false;
-        } else {
-            disponible = true;
-        }
+       this.disponible=!this.disponible;
 
     }
 
