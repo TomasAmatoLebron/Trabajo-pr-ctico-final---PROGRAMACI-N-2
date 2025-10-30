@@ -1,5 +1,7 @@
 package Models.Enumerators;
 
+import java.time.DayOfWeek;
+
 public enum EDiaDeSemana {
     LUNES("lunes"),
     MARTES("Martes"),
@@ -22,4 +24,25 @@ public enum EDiaDeSemana {
     public void setDescripcion(String descripcion) {
         this.descripcion = descripcion;
     }
+
+
+
+    public static EDiaDeSemana desdeDayOfWeek(DayOfWeek diaJava) {
+        switch (diaJava) {
+            case MONDAY:
+                return LUNES;
+            case TUESDAY:
+                return MARTES;
+            case WEDNESDAY:
+                return MIERCOLES;
+            case THURSDAY:
+                return JUEVES;
+            case FRIDAY:
+                return VIERNES;
+            case SATURDAY:
+                return SABADO;
+            case SUNDAY:
+                return DOMINGO;
 }
+        return null;
+    } }
