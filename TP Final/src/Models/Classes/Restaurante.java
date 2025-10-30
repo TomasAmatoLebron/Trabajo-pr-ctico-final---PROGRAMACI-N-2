@@ -4,22 +4,19 @@ import java.util.HashMap;
 
 public class Restaurante {
 
-
-    public class SistemaRestaurante {
-
         private Gestora<Integer, Mesa> gestoraMesas;
         private Gestora<Integer, Mozo> gestoraMozos;
         private ConsumoDia consumoDelDia;
         private HashMap<Integer, ConsumoMesa> consumosActivosPorMesa;
+
         // creacion de gestora de restaurante s
 
-        public SistemaRestaurante() {
+        public Restaurante() {
             // creamos 2 gestoras de mezas y empleados un consumo  y un mapa de consumos
             this.gestoraMesas = new Gestora<>();
             this.gestoraMozos = new Gestora<>();
             this.consumoDelDia = new ConsumoDia();
             this.consumosActivosPorMesa = new HashMap<>();
-
         }
 
 
@@ -32,7 +29,7 @@ public class Restaurante {
             gestoraMozos.agregar(mozo.getDni(), mozo);
         }
 
-        public void abrirMesa(int numeroMesa, int DniMozo) {
+        public void abrirMesa(int numeroMesa, String DniMozo) {
             Mesa mesaEncontrada = null;
             for (Mesa mesa : gestoraMesas.obtenerValores()) {
                 if (mesa.getNumeroDeMesa() == numeroMesa) {
@@ -43,7 +40,7 @@ public class Restaurante {
 
             Mozo mozoEncontrado = null;
             for (Mozo mozo : gestoraMozos.obtenerValores()) {
-                if (mozo.getDni() == DniMozo) {
+                if (mozo.getDni().equals(DniMozo)) {
                     mozoEncontrado = mozo;
                 }
             }
@@ -90,4 +87,4 @@ public class Restaurante {
     }
 
 
-}
+
