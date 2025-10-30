@@ -9,17 +9,15 @@ public class Restaurante {
         private ConsumoDia consumoDelDia;
         private HashMap<Integer, ConsumoMesa> consumosActivosPorMesa;
 
-        // creacion de gestora de restaurante s
+        // creacion de gestora de restaurantes
 
         public Restaurante() {
-            // creamos 2 gestoras de mezas y empleados un consumo  y un mapa de consumos
+            // creamos 2 gestoras de mesas y empleados un consumo  y un mapa de consumos
             this.gestoraMesas = new Gestora<>();
             this.gestoraMozos = new Gestora<>();
             this.consumoDelDia = new ConsumoDia();
             this.consumosActivosPorMesa = new HashMap<>();
         }
-
-
 
         public void agregarMesa(Mesa mesa) {
             gestoraMesas.agregar(mesa.getNumeroDeMesa(), mesa);
@@ -79,7 +77,6 @@ public class Restaurante {
                 }
 
                 consumosActivosPorMesa.remove(numeroMesa);
-
 
             }
         }

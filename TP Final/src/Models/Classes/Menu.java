@@ -23,7 +23,7 @@ public class Menu {
         };
         crearMenu();
     }
-        //Cada ves que se inicialice un menu se crea automaticamente con estos items, si se desea agregar items al menu deberia
+        //Cada vez que se inicialice un menu se crea automaticamente con estos items, si se desea agregar items al menu
         // deberia agregarse en la funcion crear menu
     private void crearMenu() {
         // Entradas
@@ -50,9 +50,5 @@ public class Menu {
             }
         }
         return null;
-    }
-
-    {
-
     }
 }
