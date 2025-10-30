@@ -39,7 +39,7 @@ public abstract class Empleado {
         return fechaDeNacimiento;
     }
 
-    public String getDni() {
+    public Integer getDni() {
         return dni;
     }
 

@@ -12,9 +12,10 @@ public class ConsumoDia {
     private HashSet<ConsumoMesa> consumos;
     private double gananciaTotal;
 
-    public ConsumoDia(EDiaDeSemana dia) {
+    public ConsumoDia() {
         fecha = LocalDate.now();
-        this.dia = dia;
+        // Se obtiene el día de la semana de la fecha y se convierte a nuestro enum.
+        this.dia = EDiaDeSemana.desdeDayOfWeek(fecha.getDayOfWeek());
         consumos = new HashSet<>();
         gananciaTotal = 0;
     }
@@ -39,6 +40,22 @@ public class ConsumoDia {
         for (ConsumoMesa consumo : consumos) {
             gananciaTotal += consumo.getPrecioTotal();
         }
+    }
+
+    public void agregarConsumoMesa(ConsumoMesa consumoMesa) {
+
+        consumos.add(consumoMesa);
+
+    }
+
+    public void eliminarConsumoMesa(ConsumoMesa consumoMesa) {
+
+        consumos.remove(consumoMesa);
+
+    }
+
+    public double getGananciaTotal() {
+        return gananciaTotal;
     }
 
     public void cerrarDia() {
