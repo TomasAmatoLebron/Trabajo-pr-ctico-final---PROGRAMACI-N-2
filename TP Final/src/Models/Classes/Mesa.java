@@ -1,5 +1,8 @@
 package Models.Classes;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 public class Mesa {
     private int numeroDeMesa;
     private boolean disponible;
@@ -32,9 +35,20 @@ public class Mesa {
 
 
     public void modificarEstadoMesa() {
-       this.disponible=!this.disponible;
+        this.disponible = !this.disponible;
 
     }
 
+    public JSONObject toJSON() {
+        try {
+            JSONObject json = new JSONObject();
+            json.put("numeroDeMesa", numeroDeMesa);
+            json.put("disponible", disponible);
+            return json;
+        } catch (JSONException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
 
 }

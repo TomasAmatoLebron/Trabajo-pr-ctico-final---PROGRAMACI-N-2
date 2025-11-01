@@ -1,5 +1,6 @@
 package Models.Classes;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.time.LocalDateTime;
@@ -74,9 +75,8 @@ public class ConsumoMesa {
 
     public void precioFinal() {
         double subtotal = 0;
-        for (ItemMenu item: consumo.keySet())
-        {
-            subtotal+=item.getPrecio()*consumo.get(item);
+        for (ItemMenu item : consumo.keySet()) {
+            subtotal += item.getPrecio() * consumo.get(item);
         }
         precioTotal = subtotal;
     }
@@ -103,29 +103,32 @@ public class ConsumoMesa {
     public String toString() {
 
         precioFinal();
-        return "Consumo:\n[ID = " + id + "\nMesa: " + mesa.getNumeroDeMesa() + "\nMozo: " + mozo.getNombre() + " " +mozo.getApellido() + "\nDetalle:\n" + mostrarConsumo() + "Precio total: " + precioTotal + "]";
+        return "Consumo:\n[ID = " + id + "\nMesa: " + mesa.getNumeroDeMesa() + "\nMozo: " + mozo.getNombre() + " " + mozo.getApellido() + "\nDetalle:\n" + mostrarConsumo() + "Precio total: " + precioTotal + "]";
 
     }
 
     public String mostrarConsumo() {
 
         StringBuilder sb = new StringBuilder();
-        for (Map.Entry entrada: consumo.entrySet())
-        {
+        for (Map.Entry entrada : consumo.entrySet()) {
             sb.append("        " + entrada.getKey().toString() + " (" + entrada.getValue() + ")\n");
         }
         return sb.toString();
     }
 
-    public JSONObject toJSON()
-    {
-        JSONObject json = new JSONObject();
-        json.put("id", id);
-        json.put("mesa", mesa.getNumeroDeMesa());
-        json.put("mozo", mozo.getNombre());
-        json.put("precioTotal", precioTotal);
-        json.put("fecha", fecha);
-        json.put("consumo", consumo);
-        return json;
+    public JSONObject toJSON() {
+        try {
+            JSONObject json = new JSONObject();
+            json.put("id", id);
+            json.put("mesa", mesa.getNumeroDeMesa());
+            json.put("mozo", mozo.getNombre());
+            json.put("precioTotal", precioTotal);
+            json.put("fecha", fecha);
+            json.put("consumo", consumo);
+            return json;
+        } catch (JSONException e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 }

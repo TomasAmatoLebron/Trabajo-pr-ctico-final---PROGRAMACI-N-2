@@ -1,5 +1,6 @@
 package Models.Classes;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.time.LocalDate;
@@ -22,11 +23,11 @@ public abstract class Empleado {
     }
 
     public Empleado() {
-        nombre="a";
-        apellido="a";
-        fechaDeNacimiento=LocalDate.of(2000, 1, 1);
-        dni="a";
-        password="a";
+        nombre = "a";
+        apellido = "a";
+        fechaDeNacimiento = LocalDate.of(2000, 1, 1);
+        dni = "a";
+        password = "a";
     }
 
     public String getNombre() {
@@ -57,12 +58,17 @@ public abstract class Empleado {
     }
 
     public JSONObject toJSON() {
-        JSONObject json = new JSONObject();
-        json.put("nombre", nombre);
-        json.put("apellido", apellido);
-        json.put("fechaDeNacimiento", fechaDeNacimiento);
-        json.put("dni", dni);
-        json.put("password", password);
-        return json;
+        try {
+            JSONObject json = new JSONObject();
+            json.put("nombre", nombre);
+            json.put("apellido", apellido);
+            json.put("fechaDeNacimiento", fechaDeNacimiento);
+            json.put("dni", dni);
+            json.put("password", password);
+            return json;
+        } catch (JSONException e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 }
