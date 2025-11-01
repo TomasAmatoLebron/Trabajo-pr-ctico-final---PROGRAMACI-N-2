@@ -2,6 +2,7 @@ package Models.Classes;
 
 import Models.Enumerators.EDiaDeSemana;
 import org.json.JSONArray;
+import org.json.JSONException;
 
 import java.time.LocalDate;
 import java.util.HashSet;
@@ -64,10 +65,15 @@ public class ConsumoDia {
     }
 
     public JSONArray toJSONArray() {
-        JSONArray arr = new JSONArray();
-        for (ConsumoMesa consumoMesa : consumos) {
-            arr.put(consumoMesa.toJSON());
+        try {
+            JSONArray arr = new JSONArray();
+            for (ConsumoMesa consumoMesa : consumos) {
+                arr.put(consumoMesa.toJSON());
+            }
+            return arr;
+        } catch (JSONException e) {
+            e.printStackTrace();
+            return null;
         }
-        return arr;
     }
 }
