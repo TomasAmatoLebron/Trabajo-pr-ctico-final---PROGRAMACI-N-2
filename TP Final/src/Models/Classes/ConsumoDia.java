@@ -1,6 +1,7 @@
 package Models.Classes;
 
 import Models.Enumerators.EDiaDeSemana;
+import org.json.JSONArray;
 
 import java.time.LocalDate;
 import java.util.HashSet;
@@ -60,5 +61,13 @@ public class ConsumoDia {
 
     public void cerrarDia() {
         calcularGananciaDia();
+    }
+
+    public JSONArray toJSONArray() {
+        JSONArray arr = new JSONArray();
+        for (ConsumoMesa consumoMesa : consumos) {
+            arr.put(consumoMesa.toJSON());
+        }
+        return arr;
     }
 }
