@@ -1,5 +1,7 @@
 package Models.Classes;
 
+import org.json.JSONObject;
+
 import java.time.LocalDate;
 import java.util.Objects;
 
@@ -39,7 +41,7 @@ public abstract class Empleado {
         return fechaDeNacimiento;
     }
 
-    public Integer getDni() {
+    public String getDni() {
         return dni;
     }
 
@@ -52,5 +54,15 @@ public abstract class Empleado {
     @Override
     public int hashCode() {
         return Objects.hashCode(dni);
+    }
+
+    public JSONObject toJSON() {
+        JSONObject json = new JSONObject();
+        json.put("nombre", nombre);
+        json.put("apellido", apellido);
+        json.put("fechaDeNacimiento", fechaDeNacimiento);
+        json.put("dni", dni);
+        json.put("password", password);
+        return json;
     }
 }

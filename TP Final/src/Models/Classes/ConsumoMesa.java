@@ -1,5 +1,7 @@
 package Models.Classes;
 
+import org.json.JSONObject;
+
 import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
@@ -113,5 +115,17 @@ public class ConsumoMesa {
             sb.append("        " + entrada.getKey().toString() + " (" + entrada.getValue() + ")\n");
         }
         return sb.toString();
+    }
+
+    public JSONObject toJSON()
+    {
+        JSONObject json = new JSONObject();
+        json.put("id", id);
+        json.put("mesa", mesa.getNumeroDeMesa());
+        json.put("mozo", mozo.getNombre());
+        json.put("precioTotal", precioTotal);
+        json.put("fecha", fecha);
+        json.put("consumo", consumo);
+        return json;
     }
 }
