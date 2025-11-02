@@ -7,6 +7,7 @@ import org.json.JSONObject;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
+import java.util.Objects;
 
 public class Restaurante {
 
@@ -144,20 +145,40 @@ public class Restaurante {
         }
     }
 
-    /*
     public void empleadosFromJSON() {
         try {
             JSONArray arreglo = new JSONArray(JSONUtils.leer("empleados.json"));
 
             for (int i = 0; i < arreglo.length(); i++) {
-                JSONObject empleado = arreglo.getJSONObject(i);
+                JSONObject empleadoJSON = arreglo.getJSONObject(i);
 
+                String puesto = empleadoJSON.getString("puesto");
+                Empleado empleado = crearEmpleadoPorPuesto(puesto);
+
+                empleado.setDni(empleadoJSON.getString("dni"));
+                empleado.setNombre(empleadoJSON.getString("nombre"));
+                empleado.setApellido(empleadoJSON.getString("apellido"));
+                empleado.setPassword(empleadoJSON.getString("password"));
+                empleado.setFechaDeNacimiento(LocalDate.parse(empleadoJSON.getString("fechaDeNacimiento"), DateTimeFormatter.ofPattern("yyyy-MM-dd")));
+                gestoraEmpleados.agregar(empleado.getDni(), empleado);
             }
+        } catch (JSONException e) {
+            e.printStackTrace();
         }
     }
-    */
-     
-}
 
+    public Empleado crearEmpleadoPorPuesto(String puesto) {
+        switch (puesto) {
+            case "Mozo":
+                return new Mozo();
+            case "Cajero":
+                return new Cajero();
+            case "Gerente":
+                return new Gerente();
+            default:
+                return null;
+        }
+    }
+}
 
 

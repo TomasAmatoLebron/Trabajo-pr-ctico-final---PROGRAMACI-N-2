@@ -46,6 +46,26 @@ public abstract class Empleado {
         return dni;
     }
 
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
+    }
+
+    public void setApellido(String apellido) {
+        this.apellido = apellido;
+    }
+
+    public void setFechaDeNacimiento(LocalDate fechaDeNacimiento) {
+        this.fechaDeNacimiento = fechaDeNacimiento;
+    }
+
+    public void setDni(String dni) {
+        this.dni = dni;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (!(o instanceof Empleado empleado)) return false;
@@ -65,6 +85,7 @@ public abstract class Empleado {
             json.put("fechaDeNacimiento", fechaDeNacimiento);
             json.put("dni", dni);
             json.put("password", password);
+            json.put("puesto", getClass().getSimpleName());
             return json;
         } catch (JSONException e) {
             e.printStackTrace();
