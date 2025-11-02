@@ -16,6 +16,7 @@ public class JSONUtils {
         try {
             FileWriter file = new FileWriter(ruta);
             file.write(array.toString());
+            file.close();
         }
         catch (IOException e)
             {
