@@ -42,8 +42,8 @@ public class Mesa {
     public JSONObject toJSON() {
         try {
             JSONObject json = new JSONObject();
-            json.put("numeroDeMesa", numeroDeMesa);
-            json.put("disponible", disponible);
+            json.put("Numero de mesa", numeroDeMesa);
+            json.put("Disponible", disponible);
             return json;
         } catch (JSONException e) {
             e.printStackTrace();

@@ -137,8 +137,8 @@ public class Restaurante {
                 Mesa mesa = new Mesa();
                 JSONObject jsonMesa = arreglo.getJSONObject(i);
 
-                mesa.setNumeroDeMesa(jsonMesa.getInt("numeroDeMesa"));
-                mesa.setDisponible(jsonMesa.getBoolean("disponible"));
+                mesa.setNumeroDeMesa(jsonMesa.getInt("Numero de mesa"));
+                mesa.setDisponible(jsonMesa.getBoolean("Disponible"));
 
                 gestoraMesas.agregar(mesa.getNumeroDeMesa(), mesa);
             }
@@ -154,14 +154,14 @@ public class Restaurante {
             for (int i = 0; i < arreglo.length(); i++) {
                 JSONObject empleadoJSON = arreglo.getJSONObject(i);
 
-                String puesto = empleadoJSON.getString("puesto");
+                String puesto = empleadoJSON.getString("Puesto");
                 Empleado empleado = crearEmpleadoPorPuesto(puesto);
 
-                empleado.setDni(empleadoJSON.getString("dni"));
-                empleado.setNombre(empleadoJSON.getString("nombre"));
-                empleado.setApellido(empleadoJSON.getString("apellido"));
-                empleado.setPassword(empleadoJSON.getString("password"));
-                empleado.setFechaDeNacimiento(LocalDate.parse(empleadoJSON.getString("fechaDeNacimiento"), DateTimeFormatter.ofPattern("yyyy-MM-dd")));
+                empleado.setDni(empleadoJSON.getString("DNI"));
+                empleado.setNombre(empleadoJSON.getString("Nombre"));
+                empleado.setApellido(empleadoJSON.getString("Apellido"));
+                empleado.setPassword(empleadoJSON.getString("Contraseña"));
+                empleado.setFechaDeNacimiento(LocalDate.parse(empleadoJSON.getString("Fecha de nacimiento"), DateTimeFormatter.ofPattern("yyyy-MM-dd")));
                 gestoraEmpleados.agregar(empleado.getDni(), empleado);
             }
         } catch (JSONException e) {
@@ -180,6 +180,13 @@ public class Restaurante {
             default:
                 return null;
         }
+    }
+
+    public void terminarJornada()
+    {
+        guardarEmpleados();
+        guardarMesas();
+        guardarConsumoDia();
     }
 }
 

@@ -119,12 +119,12 @@ public class ConsumoMesa {
     public JSONObject toJSON() {
         try {
             JSONObject json = new JSONObject();
-            json.put("id", id);
-            json.put("mesa", mesa.getNumeroDeMesa());
-            json.put("mozo", mozo.getNombre());
-            json.put("precioTotal", precioTotal);
-            json.put("fecha", fecha);
-            json.put("consumo", consumo);
+            json.put("ID", id);
+            json.put("Mesa", mesa.getNumeroDeMesa());
+            json.put("Mozo", mozo.getNombre());
+            json.put("Precio total", precioTotal);
+            json.put("Fecha", fecha);
+            json.put("Consumo", consumo);
             return json;
         } catch (JSONException e) {
             e.printStackTrace();

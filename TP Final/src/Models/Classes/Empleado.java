@@ -80,12 +80,12 @@ public abstract class Empleado {
     public JSONObject toJSON() {
         try {
             JSONObject json = new JSONObject();
-            json.put("nombre", nombre);
-            json.put("apellido", apellido);
-            json.put("fechaDeNacimiento", fechaDeNacimiento);
-            json.put("dni", dni);
-            json.put("password", password);
-            json.put("puesto", getClass().getSimpleName());
+            json.put("Nombre", nombre);
+            json.put("Apellido", apellido);
+            json.put("Fecha de nacimiento", fechaDeNacimiento);
+            json.put("DNI", dni);
+            json.put("Contraseña", password);
+            json.put("Puesto", getClass().getSimpleName());
             return json;
         } catch (JSONException e) {
             e.printStackTrace();
