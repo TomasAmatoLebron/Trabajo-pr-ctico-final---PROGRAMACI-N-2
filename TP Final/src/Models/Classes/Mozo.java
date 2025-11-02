@@ -11,5 +11,4 @@ public class Mozo extends Empleado {
     public Mozo() {
         super();
     }
-
 }
