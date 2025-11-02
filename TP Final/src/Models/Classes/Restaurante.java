@@ -42,14 +42,13 @@ public class Restaurante {
         gestoraEmpleados.eliminar(empleado.getDni());
     }
 
-    public void abrirMesa(int numeroMesa, String DniMozo) {
+    public ConsumoMesa abrirMesa(int numeroMesa, String DniMozo) {
         Mesa mesaEncontrada = null;
         for (Mesa mesa : gestoraMesas.obtenerValores()) {
             if (mesa.getNumeroDeMesa() == numeroMesa) {
                 mesaEncontrada = mesa;
             }
         }
-
 
         Empleado mozoEncontrado = null;
         for (Empleado empleado : gestoraEmpleados.obtenerValores()) {
@@ -62,7 +61,9 @@ public class Restaurante {
             mesaEncontrada.modificarEstadoMesa();
             ConsumoMesa nuevoConsumo = new ConsumoMesa((Mozo) mozoEncontrado, mesaEncontrada);
             consumosActivosPorMesa.put(numeroMesa, nuevoConsumo);
+            return nuevoConsumo;
         }
+        return null;
     }
 
     public void agregarItemAMesa(int numeroMesa, ItemMenu item, int cantidad) {
@@ -95,6 +96,7 @@ public class Restaurante {
         LocalDate fecha = LocalDate.now();
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         String fechaString = fecha.format(formatter);
+        consumoDelDia.cerrarDia();
         JSONUtils.grabarJSON(fechaString + ".json", consumoDelDia.toJSONArray());
     }
 
