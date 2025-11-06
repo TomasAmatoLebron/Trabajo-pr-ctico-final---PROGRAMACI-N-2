@@ -66,6 +66,10 @@ public abstract class Empleado {
         this.password = password;
     }
 
+    public String getPassword() {
+        return password;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (!(o instanceof Empleado empleado)) return false;

@@ -24,7 +24,6 @@ public class Main {
         restaurante.agregarItemAMesa(12,menu.obtenerItem("Coca-Cola"),3);
         restaurante.agregarItemAMesa(9,menu.obtenerItem("Bife de Chorizo"),1);
         restaurante.agregarItemAMesa(9,menu.obtenerItem("Helado"),4);
-
         restaurante.cerrarMesa(12);
         restaurante.cerrarMesa(9);
         restaurante.terminarJornada();
