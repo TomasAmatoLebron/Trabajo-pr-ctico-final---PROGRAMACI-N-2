@@ -1,5 +1,7 @@
 package Models.Classes;
 
+import Models.Exceptions.PasswordInvalidaException;
+import Models.Interfaces.Administrador;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -7,7 +9,6 @@ import org.json.JSONObject;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
-import java.util.Objects;
 
 public class Restaurante {
 
@@ -24,6 +25,38 @@ public class Restaurante {
         this.gestoraEmpleados = new Gestora<>();
         this.consumoDelDia = new ConsumoDia();
         this.consumosActivosPorMesa = new HashMap<>();
+    }
+
+    public Gestora<Integer, Mesa> getGestoraMesas() {
+        return gestoraMesas;
+    }
+
+    public void setGestoraMesas(Gestora<Integer, Mesa> gestoraMesas) {
+        this.gestoraMesas = gestoraMesas;
+    }
+
+    public Gestora<String, Empleado> getGestoraEmpleados() {
+        return gestoraEmpleados;
+    }
+
+    public void setGestoraEmpleados(Gestora<String, Empleado> gestoraEmpleados) {
+        this.gestoraEmpleados = gestoraEmpleados;
+    }
+
+    public ConsumoDia getConsumoDelDia() {
+        return consumoDelDia;
+    }
+
+    public void setConsumoDelDia(ConsumoDia consumoDelDia) {
+        this.consumoDelDia = consumoDelDia;
+    }
+
+    public HashMap<Integer, ConsumoMesa> getConsumosActivosPorMesa() {
+        return consumosActivosPorMesa;
+    }
+
+    public void setConsumosActivosPorMesa(HashMap<Integer, ConsumoMesa> consumosActivosPorMesa) {
+        this.consumosActivosPorMesa = consumosActivosPorMesa;
     }
 
     public void agregarMesa(Mesa mesa) {
@@ -188,6 +221,24 @@ public class Restaurante {
         guardarMesas();
         guardarConsumoDia();
     }
+
+    public String verificarPassword(String pass) throws PasswordInvalidaException {
+        for (Empleado emp : gestoraEmpleados.obtenerValores()) {
+            if (pass.equals(emp.getPassword()))
+            {
+                if (emp instanceof Mozo)
+                {
+                    return "Mozo";
+                }
+                if (emp instanceof Administrador) {
+                    return "Admin";
+                }
+                else return "Cajero";
+            }
+        }
+        throw new PasswordInvalidaException("¡Contraseña inválida!");
+    }
+
 }
 
 
