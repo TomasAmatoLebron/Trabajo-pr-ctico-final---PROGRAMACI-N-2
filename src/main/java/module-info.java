@@ -4,6 +4,7 @@ module com.example.tpfinalfx {
     requires org.json;
 
     requires org.kordamp.bootstrapfx.core;
+    requires javafx.graphics;
     opens com.example.tpfinalfx to javafx.fxml;
     exports com.example.tpfinalfx;
 }

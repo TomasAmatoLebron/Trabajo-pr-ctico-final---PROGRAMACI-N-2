@@ -17,12 +17,14 @@ public class Restaurante {
     private Gestora<String, Empleado> gestoraEmpleados;
     private ConsumoDia consumoDelDia;
     private HashMap<Integer, ConsumoMesa> consumosActivosPorMesa;
+    private Menu menu;
 
     public Restaurante() {
         this.gestoraMesas = new Gestora<>();
         this.gestoraEmpleados = new Gestora<>();
         this.consumoDelDia = new ConsumoDia();
         this.consumosActivosPorMesa = new HashMap<>();
+        this.menu = new Menu();
         mesasFromJSON();
         empleadosFromJSON();
     }
@@ -101,6 +103,14 @@ public class Restaurante {
         return consumosActivosPorMesa;
     }
 
+    public Menu getMenu() {
+        return menu;
+    }
+
+    public void setMenu(Menu menu) {
+        this.menu = menu;
+    }
+
     public void setConsumosActivosPorMesa(HashMap<Integer, ConsumoMesa> consumosActivosPorMesa) {
         this.consumosActivosPorMesa = consumosActivosPorMesa;
     }
@@ -121,26 +131,15 @@ public class Restaurante {
         gestoraEmpleados.eliminar(empleado.getDni());
     }
 
-    public ConsumoMesa abrirMesa(int numeroMesa, String DniMozo) {
+    public ConsumoMesa abrirMesa(int numeroMesa) {
         Mesa mesaEncontrada = null;
         for (Mesa mesa : gestoraMesas.obtenerValores()) {
             if (mesa.getNumeroDeMesa() == numeroMesa) {
-                mesaEncontrada = mesa;
+                mesa.modificarEstadoMesa();
+                ConsumoMesa nuevoConsumo = new ConsumoMesa(mesaEncontrada);
+                consumosActivosPorMesa.put(numeroMesa, nuevoConsumo);
+                return nuevoConsumo;
             }
-        }
-
-        Empleado mozoEncontrado = null;
-        for (Empleado empleado : gestoraEmpleados.obtenerValores()) {
-            if (empleado.getDni().equals(DniMozo)) {
-                mozoEncontrado = empleado;
-            }
-        }
-
-        if (mesaEncontrada != null && mozoEncontrado != null && mesaEncontrada.isDisponible()) {
-            mesaEncontrada.modificarEstadoMesa();
-            ConsumoMesa nuevoConsumo = new ConsumoMesa((Mozo) mozoEncontrado, mesaEncontrada);
-            consumosActivosPorMesa.put(numeroMesa, nuevoConsumo);
-            return nuevoConsumo;
         }
         return null;
     }
