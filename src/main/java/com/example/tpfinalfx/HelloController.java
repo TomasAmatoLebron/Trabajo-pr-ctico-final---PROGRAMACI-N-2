@@ -1,14 +1,81 @@
 package com.example.tpfinalfx;
 
+import com.example.tpfinalfx.model.entities.Empleado;
+import com.example.tpfinalfx.model.entities.Restaurante;
+import javafx.animation.PauseTransition;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.PasswordField;
+import javafx.scene.control.TextField;
+import javafx.stage.Stage;
+import javafx.util.Duration;
+
+import java.io.IOException;
 
 public class HelloController {
-    @FXML
-    private Label welcomeText;
+
+    private final Restaurante restaurante = new Restaurante();
 
     @FXML
+    private TextField usernameField;
+
+    @FXML
+    private PasswordField passwordField;
+
+    @FXML
+    private Button loginButton;
+
+    @FXML
+    private Label welcomeLabel;
+    @FXML
     protected void onHelloButtonClick() {
-        welcomeText.setText("Welcome to JavaFX Application!");
+        String dni = passwordField.getText();
+
+        if (dni.isEmpty()) {
+            welcomeLabel.setText("Por favor, ingrese un DNI.");
+            welcomeLabel.setStyle("-fx-text-fill: #dc3545;");
+            return;
+        }
+
+        Empleado empleado = restaurante.validarUsuarioPorDNI(dni);
+
+        if (empleado != null) {
+            String puesto = empleado.getClass().getSimpleName();
+            welcomeLabel.setText("¡Bienvenido, " + empleado.getNombre() + "! Puesto: " + puesto);
+            welcomeLabel.setStyle("-fx-text-fill: #28a745;"); // Color verde para éxito
+            
+            loginButton.setDisable(true);
+
+            PauseTransition delay = new PauseTransition(Duration.seconds(1.5));
+            delay.setOnFinished(event -> cambiarAMainView());
+            delay.play();
+
+        } else {
+            welcomeLabel.setText("DNI no encontrado. Intente de nuevo.");
+            welcomeLabel.setStyle("-fx-text-fill: #dc3545;");
+        }
+    }
+
+    private void cambiarAMainView() {
+        try {
+
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("main-view.fxml"));
+            Parent root = loader.load();
+
+
+            MainController mainController = loader.getController();
+            mainController.setRestaurante(this.restaurante);
+
+            Stage stage = (Stage) loginButton.getScene().getWindow();
+            stage.setScene(new Scene(root));
+            stage.setTitle("Gestor de Mesas");
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }

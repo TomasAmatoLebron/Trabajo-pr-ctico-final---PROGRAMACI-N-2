@@ -5,6 +5,7 @@ import com.example.tpfinalfx.model.interfaces.Administrador;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.json.JSONTokener;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -17,15 +18,70 @@ public class Restaurante {
     private ConsumoDia consumoDelDia;
     private HashMap<Integer, ConsumoMesa> consumosActivosPorMesa;
 
-    // creacion de gestora de restaurantes
-
     public Restaurante() {
-        // creamos 2 gestoras de mesas y empleados un consumo  y un mapa de consumos
         this.gestoraMesas = new Gestora<>();
         this.gestoraEmpleados = new Gestora<>();
         this.consumoDelDia = new ConsumoDia();
         this.consumosActivosPorMesa = new HashMap<>();
+        mesasFromJSON();
+        empleadosFromJSON();
     }
+
+
+    public Empleado validarUsuarioPorDNI(String dni) {
+        for (Empleado empleado : gestoraEmpleados.obtenerValores()) {
+            if (empleado.getDni().equalsIgnoreCase(dni)) {
+                return empleado;
+            }
+        }
+        return null;
+    }
+
+    public void mesasFromJSON() {
+        JSONTokener tokener = JSONUtils.leer("mesas.json");
+        if (tokener == null) {
+            return;
+        }
+        try {
+            JSONArray arreglo = new JSONArray(tokener);
+            for (int i = 0; i < arreglo.length(); i++) {
+                Mesa mesa = new Mesa();
+                JSONObject jsonMesa = arreglo.getJSONObject(i);
+                mesa.setNumeroDeMesa(jsonMesa.getInt("Numero de mesa"));
+                mesa.setDisponible(jsonMesa.getBoolean("Disponible"));
+                gestoraMesas.agregar(mesa.getNumeroDeMesa(), mesa);
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void empleadosFromJSON() {
+        org.json.JSONTokener tokener = JSONUtils.leer("empleados.json");
+        if (tokener == null) {
+            return;
+        }
+        try {
+            JSONArray arreglo = new JSONArray(tokener);
+            for (int i = 0; i < arreglo.length(); i++) {
+                JSONObject empleadoJSON = arreglo.getJSONObject(i);
+                String puesto = empleadoJSON.getString("Puesto");
+                Empleado empleado = crearEmpleadoPorPuesto(puesto);
+
+                if (empleado != null) {
+                    empleado.setDni(empleadoJSON.getString("DNI"));
+                    empleado.setNombre(empleadoJSON.getString("Nombre"));
+                    empleado.setApellido(empleadoJSON.getString("Apellido"));
+                    empleado.setPassword(empleadoJSON.getString("Contraseña"));
+                    empleado.setFechaDeNacimiento(LocalDate.parse(empleadoJSON.getString("Fecha de nacimiento"), DateTimeFormatter.ofPattern("yyyy-MM-dd")));
+                    gestoraEmpleados.agregar(empleado.getDni(), empleado);
+                }
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+
 
     public Gestora<Integer, Mesa> getGestoraMesas() {
         return gestoraMesas;
@@ -162,46 +218,6 @@ public class Restaurante {
         JSONUtils.grabarJSON("mesas.json", mesasToArray());
     }
 
-    public void mesasFromJSON() {
-        try {
-            JSONArray arreglo = new JSONArray(JSONUtils.leer("mesas.json"));
-
-            for (int i = 0; i < arreglo.length(); i++) {
-                Mesa mesa = new Mesa();
-                JSONObject jsonMesa = arreglo.getJSONObject(i);
-
-                mesa.setNumeroDeMesa(jsonMesa.getInt("Numero de mesa"));
-                mesa.setDisponible(jsonMesa.getBoolean("Disponible"));
-
-                gestoraMesas.agregar(mesa.getNumeroDeMesa(), mesa);
-            }
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-    }
-
-    public void empleadosFromJSON() {
-        try {
-            JSONArray arreglo = new JSONArray(JSONUtils.leer("empleados.json"));
-
-            for (int i = 0; i < arreglo.length(); i++) {
-                JSONObject empleadoJSON = arreglo.getJSONObject(i);
-
-                String puesto = empleadoJSON.getString("Puesto");
-                Empleado empleado = crearEmpleadoPorPuesto(puesto);
-
-                empleado.setDni(empleadoJSON.getString("DNI"));
-                empleado.setNombre(empleadoJSON.getString("Nombre"));
-                empleado.setApellido(empleadoJSON.getString("Apellido"));
-                empleado.setPassword(empleadoJSON.getString("Contraseña"));
-                empleado.setFechaDeNacimiento(LocalDate.parse(empleadoJSON.getString("Fecha de nacimiento"), DateTimeFormatter.ofPattern("yyyy-MM-dd")));
-                gestoraEmpleados.agregar(empleado.getDni(), empleado);
-            }
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-    }
-
     public Empleado crearEmpleadoPorPuesto(String puesto) {
         switch (puesto) {
             case "Mozo":
@@ -238,5 +254,4 @@ public class Restaurante {
         }
         throw new PasswordInvalidaException("¡Contraseña inválida!");
     }
-
 }

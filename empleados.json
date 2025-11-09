@@ -1,0 +1,35 @@
+[
+  {
+    "Nombre": "Carlos",
+    "Apellido": "Gomez",
+    "Fecha de nacimiento": "1995-05-20",
+    "DNI": "11111111",
+    "Contraseña": "pass",
+    "Puesto": "Mozo"
+  },
+  {
+    "Nombre": "Laura",
+    "Apellido": "Martinez",
+    "Fecha de nacimiento": "1998-11-15",
+    "DNI": "22222222",
+    "Contraseña": "pass",
+    "Puesto": "Mozo"
+  },
+  {
+    "Nombre": "Ana",
+    "Apellido": "Lopez",
+    "Fecha de nacimiento": "1992-03-10",
+    "DNI": "33333333",
+    "Contraseña": "pass",
+    "Puesto": "Cajero"
+  },
+  {
+    "Nombre": "Ricardo",
+    "Apellido": "Diaz",
+    "Fecha de nacimiento": "1980-01-01",
+    "DNI": "99999999",
+    "Contraseña": "admin",
+    "Puesto": "Gerente"
+  }
+
+]
