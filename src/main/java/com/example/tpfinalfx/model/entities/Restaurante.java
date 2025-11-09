@@ -27,16 +27,6 @@ public class Restaurante {
         empleadosFromJSON();
     }
 
-
-    public Empleado validarUsuarioPorDNI(String dni) {
-        for (Empleado empleado : gestoraEmpleados.obtenerValores()) {
-            if (empleado.getDni().equalsIgnoreCase(dni)) {
-                return empleado;
-            }
-        }
-        return null;
-    }
-
     public void mesasFromJSON() {
         JSONTokener tokener = JSONUtils.leer("mesas.json");
         if (tokener == null) {
@@ -238,18 +228,11 @@ public class Restaurante {
         guardarConsumoDia();
     }
 
-    public String verificarPassword(String pass) throws PasswordInvalidaException {
+    public Empleado verificarPassword(String pass) throws PasswordInvalidaException {
         for (Empleado emp : gestoraEmpleados.obtenerValores()) {
             if (pass.equals(emp.getPassword()))
             {
-                if (emp instanceof Mozo)
-                {
-                    return "Mozo";
-                }
-                if (emp instanceof Administrador) {
-                    return "Admin";
-                }
-                else return "Cajero";
+                return emp;
             }
         }
         throw new PasswordInvalidaException("¡Contraseña inválida!");

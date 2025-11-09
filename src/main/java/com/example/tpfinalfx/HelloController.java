@@ -2,6 +2,7 @@ package com.example.tpfinalfx;
 
 import com.example.tpfinalfx.model.entities.Empleado;
 import com.example.tpfinalfx.model.entities.Restaurante;
+import com.example.tpfinalfx.model.exceptions.PasswordInvalidaException;
 import javafx.animation.PauseTransition;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -31,35 +32,38 @@ public class HelloController {
 
     @FXML
     private Label welcomeLabel;
+
     @FXML
     protected void onHelloButtonClick() {
-        String dni = passwordField.getText();
+        String pass = passwordField.getText();
 
-        if (dni.isEmpty()) {
-            welcomeLabel.setText("Por favor, ingrese un DNI.");
+        if (pass.isEmpty()) {
+            welcomeLabel.setText("Por favor, ingrese la contraseña.");
             welcomeLabel.setStyle("-fx-text-fill: #dc3545;");
             return;
         }
 
-        Empleado empleado = restaurante.validarUsuarioPorDNI(dni);
+        Empleado empleado = null;
+        try {
+            empleado = restaurante.verificarPassword(pass);
+        } catch (PasswordInvalidaException e) {
+            welcomeLabel.setText("Contraseña no encontrado. Intente de nuevo.");
+            welcomeLabel.setStyle("-fx-text-fill: #dc3545;");
+        }
 
         if (empleado != null) {
             String puesto = empleado.getClass().getSimpleName();
             welcomeLabel.setText("¡Bienvenido, " + empleado.getNombre() + "! Puesto: " + puesto);
             welcomeLabel.setStyle("-fx-text-fill: #28a745;"); // Color verde para éxito
-            
+
             loginButton.setDisable(true);
 
             PauseTransition delay = new PauseTransition(Duration.seconds(1.5));
             delay.setOnFinished(event -> cambiarAMainView());
             delay.play();
 
-        } else {
-            welcomeLabel.setText("DNI no encontrado. Intente de nuevo.");
-            welcomeLabel.setStyle("-fx-text-fill: #dc3545;");
         }
     }
-
     private void cambiarAMainView() {
         try {
 

@@ -9,21 +9,17 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<VBox alignment="CENTER" prefHeight="400.0" prefWidth="600.0" spacing="15.0" style="-fx-background-color: #E6E8F0;" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.tpfinalfx.HelloController">
+<VBox alignment="CENTER" prefHeight="547.0" prefWidth="669.0" spacing="15.0" style="-fx-background-color: #E6E8F0;" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.tpfinalfx.HelloController">
     <padding>
         <Insets bottom="20.0" left="50.0" right="50.0" top="20.0" />
     </padding>
-
-    <ImageView fitHeight="120.0" fitWidth="120.0" pickOnBounds="true" preserveRatio="true" smooth="true">
+   <ImageView fitHeight="263.0" fitWidth="279.0" pickOnBounds="true" preserveRatio="true">
       <image>
-         <Image url="@images/images.png" />
+         <Image url="@../../../Provecho%20app_Mesa%20de%20trabajo%201.png" />
       </image>
-      <VBox.margin>
-         <Insets bottom="10.0" />
-      </VBox.margin>
-    </ImageView>
+   </ImageView>
 
-    <Label text="Login">
+    <Label text="¡Bienvenido/a!">
       <font>
          <Font name="System Bold" size="24.0" />
       </font>
@@ -32,10 +28,10 @@
       </VBox.margin>
     </Label>
 
-    <Label style="-fx-font-size: 14px; -fx-text-fill: #007bff; -fx-font-weight: bold;" text="Usuario" />
+    <Label style="-fx-font-size: 14px; -fx-text-fill: #007bff; -fx-font-weight: bold;" text="Ingrese la contraseña de empleado:" />
     <PasswordField fx:id="passwordField" maxWidth="250.0" promptText="Contraseña" />
 
-    <Button fx:id="loginButton" onAction="#onHelloButtonClick" style="-fx-background-color: #007bff; -fx-text-fill: white; -fx-font-weight: bold;" text="Iniciar Sesión">
+    <Button fx:id="loginButton" onAction="#onHelloButtonClick" style="-fx-background-color: #007bff; -fx-text-fill: white; -fx-font-weight: bold;" text="Iniciar sesión">
       <VBox.margin>
          <Insets top="10.0" />
       </VBox.margin>
