@@ -38,4 +38,8 @@ public class Gestora<K, T> {
         return listado.values();
     }
 
+    public T obtenerMesa(K k) {
+        return listado.get(k);
+    }
+
 }

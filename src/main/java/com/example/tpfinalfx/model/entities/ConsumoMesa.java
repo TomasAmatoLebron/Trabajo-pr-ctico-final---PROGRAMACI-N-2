@@ -11,24 +11,18 @@ public class ConsumoMesa {
 
     private int id;
     private static int contador = 0;
-    private Mozo mozo;
     private Mesa mesa;
     private HashMap<ItemMenu, Integer> consumo;
     private double precioTotal;
     private LocalDateTime fecha;
 
-    public ConsumoMesa(Mozo mozo, Mesa mesa) {
-        this.mozo = mozo;
+    public ConsumoMesa(Mesa mesa) {
         contador++;
         id = contador;
         consumo = new HashMap<ItemMenu, Integer>();
         precioTotal = 0;
         fecha = LocalDateTime.now();
         this.mesa = mesa;
-    }
-
-    public void setMozo(Mozo mozo) {
-        this.mozo = mozo;
     }
 
     public void setConsumo(HashMap<ItemMenu, Integer> consumo) {
@@ -45,10 +39,6 @@ public class ConsumoMesa {
 
     public int getContador() {
         return contador;
-    }
-
-    public Mozo getMozo() {
-        return mozo;
     }
 
     public Mesa getMesa() {
@@ -103,7 +93,7 @@ public class ConsumoMesa {
     public String toString() {
 
         precioFinal();
-        return "Consumo:\n[ID = " + id + "\nMesa: " + mesa.getNumeroDeMesa() + "\nMozo: " + mozo.getNombre() + " " + mozo.getApellido() + "\nDetalle:\n" + mostrarConsumo() + "Precio total: " + precioTotal + "]";
+        return "Consumo:\n[ID = " + id + "\nMesa: " + mesa.getNumeroDeMesa() + "\nDetalle:\n" + mostrarConsumo() + "Precio total: " + precioTotal + "]";
 
     }
 
@@ -121,7 +111,6 @@ public class ConsumoMesa {
             JSONObject json = new JSONObject();
             json.put("ID", id);
             json.put("Mesa", mesa.getNumeroDeMesa());
-            json.put("Mozo", mozo.getNombre());
             json.put("Precio total", precioTotal);
             json.put("Fecha", fecha);
             json.put("Consumo", consumo);

@@ -17,8 +17,7 @@ public class Menu {
     }
 
     public Menu() {
-        this.items = new HashSet<>() {
-        };
+        this.items = new HashSet<>();
         crearMenu();
     }
 

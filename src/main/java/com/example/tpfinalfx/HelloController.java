@@ -19,7 +19,7 @@ import java.io.IOException;
 
 public class HelloController {
 
-    private final Restaurante restaurante = new Restaurante();
+    private Restaurante restaurante = new Restaurante();
 
     @FXML
     private TextField usernameField;
@@ -47,7 +47,7 @@ public class HelloController {
         try {
             empleado = restaurante.verificarPassword(pass);
         } catch (PasswordInvalidaException e) {
-            welcomeLabel.setText("Contraseña no encontrado. Intente de nuevo.");
+            welcomeLabel.setText("Contraseña no encontrada. Intente de nuevo.");
             welcomeLabel.setStyle("-fx-text-fill: #dc3545;");
         }
 
@@ -64,19 +64,24 @@ public class HelloController {
 
         }
     }
+
+    public void setRestaurante(Restaurante restaurante) {
+        this.restaurante = restaurante;
+    }
+
     private void cambiarAMainView() {
         try {
 
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("main-view.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("Vista_Mozos.fxml"));
             Parent root = loader.load();
 
 
-            MainController mainController = loader.getController();
-            mainController.setRestaurante(this.restaurante);
+            MozosController mozosController = loader.getController();
+            mozosController.setRestaurante(this.restaurante);
 
             Stage stage = (Stage) loginButton.getScene().getWindow();
             stage.setScene(new Scene(root));
-            stage.setTitle("Gestor de Mesas");
+            stage.setTitle("Panel de mozo");
 
         } catch (IOException e) {
             e.printStackTrace();
