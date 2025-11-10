@@ -1,6 +1,7 @@
 package com.example.tpfinalfx;
 
 import com.example.tpfinalfx.model.entities.*;
+import com.example.tpfinalfx.model.enums.ETipoProducto;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -14,11 +15,13 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.scene.text.Text;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.time.LocalDate;
+import java.util.Optional;
 
 public class GerentesController {
 
@@ -157,12 +160,12 @@ public class GerentesController {
 
             miRestaurante.agregarEmpleado(nuevoEmpleado);
             popupStage.close();
+            miRestaurante.guardarEmpleados();
 
         });
 
         btnCancelar.setOnAction(e -> popupStage.close());
 
-        // Layout
         GridPane grid = new GridPane();
         grid.setVgap(10);
         grid.setHgap(10);
@@ -230,6 +233,7 @@ public class GerentesController {
                 if (response == ButtonType.OK) {
                     miRestaurante.eliminarEmpleado(seleccionado);
                     tabla.getItems().remove(seleccionado);
+                    miRestaurante.guardarEmpleados();
                 }
             });
         });
@@ -250,14 +254,162 @@ public class GerentesController {
 
     @FXML
     public void verMenu() {
+        Stage ventana = new Stage();
+        ventana.setTitle("Listado del Menú");
+
+        TableView<ItemMenu> tabla = new TableView<>();
+
+        TableColumn<ItemMenu, String> colNombre = new TableColumn<>("Nombre");
+        colNombre.setCellValueFactory(new PropertyValueFactory<>("nombre"));
+
+        TableColumn<ItemMenu, Double> colPrecio = new TableColumn<>("Precio");
+        colPrecio.setCellValueFactory(new PropertyValueFactory<>("precio"));
+
+        TableColumn<ItemMenu, ETipoProducto> colCategoria = new TableColumn<>("Categoría");
+        colCategoria.setCellValueFactory(new PropertyValueFactory<>("categoria"));
+
+        TableColumn<ItemMenu, String> colDescripcion = new TableColumn<>("Descripción");
+        colDescripcion.setCellValueFactory(new PropertyValueFactory<>("descripcion"));
+
+        tabla.getColumns().addAll(colNombre, colPrecio, colCategoria, colDescripcion);
+
+        tabla.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
+
+        tabla.setItems(FXCollections.observableArrayList(miRestaurante.getMenu().obtenerValores()));
+
+        VBox layout = new VBox(10);
+        layout.setPadding(new Insets(15));
+        layout.getChildren().addAll(new Text("Listado de Ítems del Menú:"), tabla);
+
+        Scene escena = new Scene(layout, 700, 400);
+        ventana.setScene(escena);
+        ventana.show();
     }
 
     @FXML
     public void agregarItemMenu() {
+        Stage ventana = new Stage();
+        ventana.setTitle("Agregar nuevo ítem al menú");
+
+        TextField nombreField = new TextField();
+        TextField precioField = new TextField();
+        ComboBox<ETipoProducto> categoriaBox = new ComboBox<>();
+        categoriaBox.getItems().addAll(ETipoProducto.values());
+        TextArea descripcionArea = new TextArea();
+
+        Label lblNombre = new Label("Nombre:");
+        Label lblPrecio = new Label("Precio:");
+        Label lblCategoria = new Label("Categoría:");
+        Label lblDescripcion = new Label("Descripción:");
+
+        Button btnAceptar = new Button("Agregar");
+        Button btnCancelar = new Button("Cancelar");
+
+        HBox botones = new HBox(10, btnAceptar, btnCancelar);
+        botones.setAlignment(Pos.CENTER_RIGHT);
+
+        GridPane grid = new GridPane();
+        grid.setVgap(10);
+        grid.setHgap(10);
+        grid.setPadding(new Insets(20));
+
+        grid.add(lblNombre, 0, 0);
+        grid.add(nombreField, 1, 0);
+        grid.add(lblPrecio, 0, 1);
+        grid.add(precioField, 1, 1);
+        grid.add(lblCategoria, 0, 2);
+        grid.add(categoriaBox, 1, 2);
+        grid.add(lblDescripcion, 0, 3);
+        grid.add(descripcionArea, 1, 3);
+        grid.add(botones, 1, 4);
+
+        Scene scene = new Scene(grid, 400, 350);
+        ventana.setScene(scene);
+        ventana.show();
+
+        btnAceptar.setOnAction(e -> {
+            try {
+                String nombre = nombreField.getText().trim();
+                double precio = Double.parseDouble(precioField.getText().trim());
+                ETipoProducto categoria = categoriaBox.getValue();
+                String descripcion = descripcionArea.getText().trim();
+
+
+                ItemMenu nuevoItem = new ItemMenu(nombre, precio, categoria, descripcion);
+
+                miRestaurante.agregarMenu(nuevoItem);
+                miRestaurante.guardarMenu();
+
+            } catch (NumberFormatException ex) {
+                ex.printStackTrace();
+            }
+        });
+
+        btnCancelar.setOnAction(e -> ventana.close());
     }
 
     @FXML
     public void eliminarItemMenu() {
+        Stage ventana = new Stage();
+        ventana.setTitle("Eliminar ítem del menú");
+
+        TableView<ItemMenu> tabla = new TableView<>();
+        tabla.setPrefWidth(500);
+        tabla.setPrefHeight(300);
+
+        TableColumn<ItemMenu, String> nombreCol = new TableColumn<>("Nombre");
+        nombreCol.setCellValueFactory(new PropertyValueFactory<>("nombre"));
+        nombreCol.setPrefWidth(150);
+
+        TableColumn<ItemMenu, Double> precioCol = new TableColumn<>("Precio");
+        precioCol.setCellValueFactory(new PropertyValueFactory<>("precio"));
+        precioCol.setPrefWidth(100);
+
+        TableColumn<ItemMenu, ETipoProducto> categoriaCol = new TableColumn<>("Categoría");
+        categoriaCol.setCellValueFactory(new PropertyValueFactory<>("categoria"));
+        categoriaCol.setPrefWidth(120);
+
+        TableColumn<ItemMenu, String> descCol = new TableColumn<>("Descripción");
+        descCol.setCellValueFactory(new PropertyValueFactory<>("descripcion"));
+        descCol.setPrefWidth(200);
+
+        tabla.getColumns().addAll(nombreCol, precioCol, categoriaCol, descCol);
+
+        ObservableList<ItemMenu> items = FXCollections.observableArrayList(miRestaurante.getMenu().obtenerValores());
+        tabla.setItems(items);
+
+        Button btnEliminar = new Button("Eliminar");
+        btnEliminar.setStyle("-fx-background-color: #dc3545; -fx-text-fill: white;");
+        Button btnCancelar = new Button("Cancelar");
+
+        HBox botones = new HBox(10, btnEliminar, btnCancelar);
+        botones.setAlignment(Pos.CENTER_RIGHT);
+
+        VBox layout = new VBox(15, tabla, botones);
+        layout.setPadding(new Insets(20));
+
+        Scene scene = new Scene(layout, 600, 400);
+        ventana.setScene(scene);
+        ventana.show();
+
+        btnEliminar.setOnAction(e -> {
+            ItemMenu seleccionado = tabla.getSelectionModel().getSelectedItem();
+
+
+            Alert confirmacion = new Alert(Alert.AlertType.CONFIRMATION);
+            confirmacion.setTitle("Confirmar eliminación");
+            confirmacion.setHeaderText(null);
+            confirmacion.setContentText("¿Está seguro de que desea eliminar \"" + seleccionado.getNombre() + "\"?");
+            Optional<ButtonType> resultado = confirmacion.showAndWait();
+
+            if (resultado.isPresent() && resultado.get() == ButtonType.OK) {
+                miRestaurante.eliminarMenu(seleccionado);
+                items.remove(seleccionado);
+                miRestaurante.guardarMenu();
+            }
+        });
+
+        btnCancelar.setOnAction(e -> ventana.close());
     }
 
     @FXML
@@ -345,6 +497,7 @@ public class GerentesController {
             Mesa nuevaMesa = new Mesa(Integer.parseInt(numeroTexto));
             miRestaurante.agregarMesa(nuevaMesa);
             popupStage.close();
+            miRestaurante.guardarMesas();
         });
 
         btnCancelar.setOnAction(e -> popupStage.close());
@@ -399,6 +552,7 @@ public class GerentesController {
                 if (response == ButtonType.OK) {
                     miRestaurante.eliminarMesa(seleccionada);
                     tablaMesas.getItems().remove(seleccionada);
+                    miRestaurante.guardarMesas();
                 }
             });
         });

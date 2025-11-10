@@ -138,6 +138,14 @@ public class Restaurante {
         this.menu = menu;
     }
 
+    public void agregarMenu(ItemMenu item) {
+        menu.agregar(item.getNombre(), item);
+    }
+
+    public void eliminarMenu(ItemMenu item) {
+        menu.eliminar(item.getNombre());
+    }
+
     public void agregarMesa(Mesa mesa) {
         gestoraMesas.agregar(mesa.getNumeroDeMesa(), mesa);
     }
