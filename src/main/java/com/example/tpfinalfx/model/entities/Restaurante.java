@@ -1,5 +1,6 @@
 package com.example.tpfinalfx.model.entities;
 
+import com.example.tpfinalfx.model.enums.ETipoProducto;
 import com.example.tpfinalfx.model.exceptions.PasswordInvalidaException;
 import com.example.tpfinalfx.model.interfaces.Administrador;
 import org.json.JSONArray;
@@ -17,16 +18,38 @@ public class Restaurante {
     private Gestora<String, Empleado> gestoraEmpleados;
     private ConsumoDia consumoDelDia;
     private HashMap<Integer, ConsumoMesa> consumosActivosPorMesa;
-    private Menu menu;
+    private Gestora<String, ItemMenu> menu;
 
     public Restaurante() {
         this.gestoraMesas = new Gestora<>();
         this.gestoraEmpleados = new Gestora<>();
         this.consumoDelDia = new ConsumoDia();
         this.consumosActivosPorMesa = new HashMap<>();
-        this.menu = new Menu();
+        this.menu = new Gestora<>();
         mesasFromJSON();
         empleadosFromJSON();
+        menuFromJSON();
+    }
+
+    public void menuFromJSON() {
+        JSONTokener tokener = JSONUtils.leer("menu.json");
+        if (tokener == null) {
+            return;
+        }
+        try {
+            JSONArray arreglo = new JSONArray(tokener);
+            for (int i = 0; i < arreglo.length(); i++) {
+                ItemMenu item = new ItemMenu();
+                JSONObject jsonMenu = arreglo.getJSONObject(i);
+                item.setNombre(jsonMenu.getString("Nombre"));
+                item.setPrecio(jsonMenu.getDouble("Precio"));
+                item.setDescripcion(jsonMenu.getString("Descripcion"));
+                item.setCategoria(ETipoProducto.valueOf(jsonMenu.getString("Categoria")));
+                menu.agregar(item.getNombre(), item);
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
     }
 
     public void mesasFromJSON() {
@@ -101,14 +124,6 @@ public class Restaurante {
 
     public HashMap<Integer, ConsumoMesa> getConsumosActivosPorMesa() {
         return consumosActivosPorMesa;
-    }
-
-    public Menu getMenu() {
-        return menu;
-    }
-
-    public void setMenu(Menu menu) {
-        this.menu = menu;
     }
 
     public void setConsumosActivosPorMesa(HashMap<Integer, ConsumoMesa> consumosActivosPorMesa) {
@@ -220,11 +235,24 @@ public class Restaurante {
         }
     }
 
+    public JSONArray menuToArray() {
+        JSONArray array = new JSONArray();
+        for (ItemMenu item : menu.obtenerValores()) {
+            array.put(item.toJSON());
+        }
+        return array;
+    }
+
+    public void guardarMenu() {
+        JSONUtils.grabarJSON("menu.json", menuToArray());
+    }
+
     public void terminarJornada()
     {
         guardarEmpleados();
         guardarMesas();
         guardarConsumoDia();
+        guardarMenu();
     }
 
     public Empleado verificarPassword(String pass) throws PasswordInvalidaException {

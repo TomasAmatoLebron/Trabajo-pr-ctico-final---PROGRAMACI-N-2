@@ -1,7 +1,5 @@
 package com.example.tpfinalfx;
 
-import com.example.tpfinalfx.model.GerentesController;
-import com.example.tpfinalfx.model.entities.Cajero;
 import com.example.tpfinalfx.model.entities.Empleado;
 import com.example.tpfinalfx.model.entities.Restaurante;
 import com.example.tpfinalfx.model.exceptions.PasswordInvalidaException;
@@ -57,7 +55,7 @@ public class HelloController {
         if (empleado != null) {
             String puesto = empleado.getClass().getSimpleName();
             welcomeLabel.setText("¡Bienvenido/a, " + empleado.getNombre() + "! Puesto: " + puesto);
-            welcomeLabel.setStyle("-fx-text-fill: #28a745;"); // Color verde para éxito
+            welcomeLabel.setStyle("-fx-text-fill: #28a745;");
 
             loginButton.setDisable(true);
 

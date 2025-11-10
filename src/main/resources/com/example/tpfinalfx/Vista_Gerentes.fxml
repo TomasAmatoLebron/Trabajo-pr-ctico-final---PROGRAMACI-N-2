@@ -28,44 +28,44 @@
             </rowConstraints>
 
             <Text fill="#e82121" style="-fx-font-size: 24px; -fx-font-weight: bold;" text="EMPLEADOS" GridPane.columnIndex="0" GridPane.halignment="CENTER" GridPane.rowIndex="0" />
-            <Button fx:id="verEmp" maxWidth="200" text="Ver empleados" GridPane.columnIndex="0" GridPane.rowIndex="1">
+            <Button fx:id="verEmp" maxWidth="200" onMouseClicked="#verEmpleados" text="Ver empleados" GridPane.columnIndex="0" GridPane.rowIndex="1">
                 <font><Font size="20.0" /></font>
                 <GridPane.margin><Insets left="50.0" /></GridPane.margin>
             </Button>
-            <Button fx:id="aggEmp" maxWidth="200" text="Agregar empleado" GridPane.columnIndex="0" GridPane.rowIndex="2">
+            <Button fx:id="aggEmp" maxWidth="200" onMouseClicked="#agregarEmpleado" text="Agregar empleado" GridPane.columnIndex="0" GridPane.rowIndex="2">
                 <font><Font size="20.0" /></font>
                 <GridPane.margin><Insets left="50.0" /></GridPane.margin>
             </Button>
-            <Button fx:id="eliEmp" maxWidth="200" text="Eliminar empleado" GridPane.columnIndex="0" GridPane.rowIndex="3">
+            <Button fx:id="eliEmp" maxWidth="200" onMouseClicked="#eliminarEmpleado" text="Eliminar empleado" GridPane.columnIndex="0" GridPane.rowIndex="3">
                 <font><Font size="19.0" /></font>
                 <GridPane.margin><Insets left="50.0" /></GridPane.margin>
             </Button>
 
             <Text style="-fx-font-size: 24px; -fx-font-weight: bold; -fx-fill: #e82121;" text="MENÚ" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="0" />
-            <Button fx:id="verM" maxWidth="200" text="Ver menú" GridPane.columnIndex="1" GridPane.rowIndex="1">
+            <Button fx:id="verM" maxWidth="200" onMouseClicked="#verMenu" text="Ver menú" GridPane.columnIndex="1" GridPane.rowIndex="1">
                 <font><Font size="20.0" /></font>
                 <GridPane.margin><Insets left="50.0" /></GridPane.margin>
             </Button>
-            <Button fx:id="aggM" maxWidth="200" text="Agregar Item" GridPane.columnIndex="1" GridPane.rowIndex="2">
+            <Button fx:id="aggM" maxWidth="200" onMouseClicked="#agregarItemMenu" text="Agregar Item" GridPane.columnIndex="1" GridPane.rowIndex="2">
                 <font><Font size="20.0" /></font>
                 <GridPane.margin><Insets left="50.0" /></GridPane.margin>
             </Button>
-            <Button fx:id="eliM" maxWidth="200" text="Eliminar Item" GridPane.columnIndex="1" GridPane.rowIndex="3">
+            <Button fx:id="eliM" maxWidth="200" onMouseClicked="#eliminarItemMenu" text="Eliminar Item" GridPane.columnIndex="1" GridPane.rowIndex="3">
                 <font><Font size="20.0" /></font>
                 <GridPane.margin><Insets left="50.0" /></GridPane.margin>
             </Button>
 
             <!-- ===== COLUMNA MESAS ===== -->
             <Text style="-fx-font-size: 24px; -fx-font-weight: bold; -fx-fill: #e82121;" text="MESAS" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="0" />
-            <Button fx:id="verMes" maxWidth="200" text="Ver mesas" GridPane.columnIndex="2" GridPane.rowIndex="1">
+            <Button fx:id="verMes" maxWidth="200" onMouseClicked="#verMesas" text="Ver mesas" GridPane.columnIndex="2" GridPane.rowIndex="1">
                 <font><Font size="20.0" /></font>
                 <GridPane.margin><Insets left="50.0" /></GridPane.margin>
             </Button>
-            <Button fx:id="aggMes" maxWidth="200" text="Agregar mesa" GridPane.columnIndex="2" GridPane.rowIndex="2">
+            <Button fx:id="aggMes" maxWidth="200" onMouseClicked="#agregarMesa" text="Agregar mesa" GridPane.columnIndex="2" GridPane.rowIndex="2">
                 <font><Font size="20.0" /></font>
                 <GridPane.margin><Insets left="50.0" /></GridPane.margin>
             </Button>
-            <Button fx:id="eliMes" maxWidth="200" text="Eliminar mesa" GridPane.columnIndex="2" GridPane.rowIndex="3">
+            <Button fx:id="eliMes" maxWidth="200" onMouseClicked="#eliminarMesa" text="Eliminar mesa" GridPane.columnIndex="2" GridPane.rowIndex="3">
                 <font><Font size="20.0" /></font>
                 <GridPane.margin><Insets left="50.0" /></GridPane.margin>
             </Button>
@@ -82,7 +82,15 @@
                 <Insets bottom="5" right="20" top="5" />
             </padding>
             <children>
-                <Button fx:id="cerrar" onAction="#cerrarSesion" prefHeight="35" prefWidth="140" style="-fx-background-color: #dc3545; -fx-text-fill: white;" text="Cerrar Sesión" />
+            <Button fx:id="cerrarDia" mnemonicParsing="false" onMouseClicked="#finalizarJornada" text="FINALIZAR JORNADA">
+               <HBox.margin>
+                  <Insets right="600.0" />
+               </HBox.margin>
+               <font>
+                  <Font name="System Bold" size="16.0" />
+               </font>
+            </Button>
+                <Button fx:id="cerrar" onMouseClicked="#cerrarSesion" prefHeight="35" prefWidth="140" style="-fx-background-color: #dc3545; -fx-text-fill: white;" text="Cerrar Sesión" />
             </children>
         </HBox>
     </bottom>
