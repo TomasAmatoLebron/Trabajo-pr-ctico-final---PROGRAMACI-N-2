@@ -130,6 +130,14 @@ public class Restaurante {
         this.consumosActivosPorMesa = consumosActivosPorMesa;
     }
 
+    public Gestora<String, ItemMenu> getMenu() {
+        return menu;
+    }
+
+    public void setMenu(Gestora<String, ItemMenu> menu) {
+        this.menu = menu;
+    }
+
     public void agregarMesa(Mesa mesa) {
         gestoraMesas.agregar(mesa.getNumeroDeMesa(), mesa);
     }
