@@ -1,5 +1,6 @@
 package com.example.tpfinalfx;
 
+import com.example.tpfinalfx.model.entities.Cajero;
 import com.example.tpfinalfx.model.entities.Empleado;
 import com.example.tpfinalfx.model.entities.Restaurante;
 import com.example.tpfinalfx.model.exceptions.PasswordInvalidaException;
@@ -16,6 +17,7 @@ import javafx.stage.Stage;
 import javafx.util.Duration;
 
 import java.io.IOException;
+import java.util.Objects;
 
 public class HelloController {
 
@@ -53,13 +55,13 @@ public class HelloController {
 
         if (empleado != null) {
             String puesto = empleado.getClass().getSimpleName();
-            welcomeLabel.setText("¡Bienvenido, " + empleado.getNombre() + "! Puesto: " + puesto);
+            welcomeLabel.setText("¡Bienvenido/a, " + empleado.getNombre() + "! Puesto: " + puesto);
             welcomeLabel.setStyle("-fx-text-fill: #28a745;"); // Color verde para éxito
 
             loginButton.setDisable(true);
 
             PauseTransition delay = new PauseTransition(Duration.seconds(1.5));
-            delay.setOnFinished(event -> cambiarAMainView());
+            delay.setOnFinished(event -> cambiarAMainView(puesto));
             delay.play();
 
         }
@@ -69,20 +71,31 @@ public class HelloController {
         this.restaurante = restaurante;
     }
 
-    private void cambiarAMainView() {
+    private void cambiarAMainView(String puesto) {
         try {
+            if (Objects.equals(puesto, "Mozo")) {
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("Vista_Mozos.fxml"));
+                Parent root = loader.load();
 
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("Vista_Mozos.fxml"));
-            Parent root = loader.load();
 
+                MozosController mozosController = loader.getController();
+                mozosController.setRestaurante(this.restaurante);
 
-            MozosController mozosController = loader.getController();
-            mozosController.setRestaurante(this.restaurante);
+                Stage stage = (Stage) loginButton.getScene().getWindow();
+                stage.setScene(new Scene(root));
+                stage.setTitle("Panel de mozo");
+            }
+            else if (puesto.equals("Cajero")) {
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("Vista_Cajeros.fxml"));
+                Parent root = loader.load();
 
-            Stage stage = (Stage) loginButton.getScene().getWindow();
-            stage.setScene(new Scene(root));
-            stage.setTitle("Panel de mozo");
+                CajerosController cajerosController = loader.getController();
+                cajerosController.setRestaurante(this.restaurante);
 
+                Stage stage = (Stage) loginButton.getScene().getWindow();
+                stage.setScene(new Scene(root));
+                stage.setTitle("Panel de cajero");
+            }
         } catch (IOException e) {
             e.printStackTrace();
         }

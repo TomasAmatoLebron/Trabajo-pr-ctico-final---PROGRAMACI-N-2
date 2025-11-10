@@ -4,7 +4,7 @@
     "Apellido": "Gomez",
     "Fecha de nacimiento": "1995-05-20",
     "DNI": "11111111",
-    "Contraseña": "pass",
+    "Contraseña": "mozo",
     "Puesto": "Mozo"
   },
   {
@@ -12,7 +12,7 @@
     "Apellido": "Martinez",
     "Fecha de nacimiento": "1998-11-15",
     "DNI": "22222222",
-    "Contraseña": "pass",
+    "Contraseña": "mozo2",
     "Puesto": "Mozo"
   },
   {
@@ -20,7 +20,7 @@
     "Apellido": "Lopez",
     "Fecha de nacimiento": "1992-03-10",
     "DNI": "33333333",
-    "Contraseña": "pass",
+    "Contraseña": "cajero",
     "Puesto": "Cajero"
   },
   {
@@ -28,7 +28,7 @@
     "Apellido": "Diaz",
     "Fecha de nacimiento": "1980-01-01",
     "DNI": "99999999",
-    "Contraseña": "admin",
+    "Contraseña": "gerente",
     "Puesto": "Gerente"
   }
 

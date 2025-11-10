@@ -10,7 +10,6 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.input.MouseButton;
@@ -22,14 +21,12 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
-import org.kordamp.bootstrapfx.BootstrapFX;
 
 import java.io.IOException;
 import java.util.*;
 
-public class MozosController {
+public class CajerosController {
 
-    @FXML
     private GridPane mesasGrid;
 
     private Restaurante miRestaurante;
@@ -115,172 +112,35 @@ public class MozosController {
 
         ContextMenu menuMesa = new ContextMenu();
 
-        if (mesa.isDisponible()) {
-            MenuItem abrir = new MenuItem("Abrir mesa");
-            abrir.setOnAction(e -> {
-                ConsumoMesa consumo = miRestaurante.abrirMesa(mesa.getNumeroDeMesa());
-                actualizarVisualMesa(botonMesa, mesa);
-            });
-            menuMesa.getItems().add(abrir);
-        } else {
+        if (!mesa.isDisponible()) {
             MenuItem verPedido = new MenuItem("Ver consumo");
-            MenuItem agregarItem = new MenuItem("Agregar item a pedido");
-            MenuItem eliminarItem = new MenuItem("Eliminar item de pedido");
+            MenuItem cerrarMesa = new MenuItem("Cerrar Mesa");
 
             verPedido.setOnAction(e -> mostrarConsumoMesa(mesa));
-            agregarItem.setOnAction(e -> agregarAlPedido(mesa));
-            eliminarItem.setOnAction(e -> eliminarItemDePedido(mesa));
 
-
-            menuMesa.getItems().addAll(verPedido, agregarItem, eliminarItem);
+            cerrarMesa.setOnAction(e -> {
+                miRestaurante.cerrarMesa(mesa.getNumeroDeMesa());
+                actualizarVisualMesa(botonMesa, mesa);
+                menuMesa.getItems().addAll(verPedido, cerrarMesa);
+            });
+            menuMesa.getItems().addAll(verPedido, cerrarMesa);
         }
-
         menuMesa.show(botonMesa, event.getScreenX(), event.getScreenY());
-    }
-
-    private void eliminarItemDePedido(Mesa mesa) {
-
-        ConsumoMesa consumo = miRestaurante.getConsumosActivosPorMesa().get(mesa.getNumeroDeMesa());
-
-        Stage stage = new Stage();
-        stage.setTitle("Eliminar ítem - Mesa " + mesa.getNumeroDeMesa());
-        stage.initModality(Modality.APPLICATION_MODAL);
-
-        TableView<Map.Entry<ItemMenu, Integer>> tabla = new TableView<>();
-
-        TableColumn<Map.Entry<ItemMenu, Integer>, String> colNombre = new TableColumn<>("Nombre");
-        TableColumn<Map.Entry<ItemMenu, Integer>, Integer> colCantidad = new TableColumn<>("Cantidad");
-        TableColumn<Map.Entry<ItemMenu, Integer>, Double> colPrecio = new TableColumn<>("Precio");
-
-        colNombre.setCellValueFactory(cell -> new ReadOnlyStringWrapper(cell.getValue().getKey().getNombre()));
-        colCantidad.setCellValueFactory(cell -> new ReadOnlyObjectWrapper<>(cell.getValue().getValue()));
-        colPrecio.setCellValueFactory(cell -> new ReadOnlyObjectWrapper<>(cell.getValue().getKey().getPrecio()));
-
-        tabla.getColumns().addAll(colNombre, colCantidad, colPrecio);
-        tabla.getItems().addAll(consumo.getConsumo().entrySet());
-
-        tabla.setPrefHeight(300);
-
-        Label lblCantidad = new Label("Cantidad a eliminar:");
-        Spinner<Integer> spnCantidad = new Spinner<>(1, 10, 1);
-        spnCantidad.setEditable(true);
-
-        HBox cantidadBox = new HBox(10, lblCantidad, spnCantidad);
-        cantidadBox.setAlignment(Pos.CENTER_LEFT);
-
-        Button btnEliminar = new Button("Eliminar");
-        Button btnCancelar = new Button("Cancelar");
-        HBox botones = new HBox(10, btnEliminar, btnCancelar);
-        botones.setAlignment(Pos.CENTER_RIGHT);
-
-        btnEliminar.setOnAction(e -> {
-            Map.Entry<ItemMenu, Integer> seleccionado = tabla.getSelectionModel().getSelectedItem();
-
-            int cantidadAEliminar = spnCantidad.getValue();
-            ItemMenu item = seleccionado.getKey();
-            int cantidadActual = seleccionado.getValue();
-
-            consumo.eliminarItem(item, cantidadAEliminar);
-            if (consumo.getConsumo().get(item) <= 0) {
-                consumo.getConsumo().remove(item);
-            }
-
-            consumo.precioFinal();
-
-            stage.close();
-        });
-
-        btnCancelar.setOnAction(e -> stage.close());
-
-        VBox layout = new VBox(15,
-                new Label("Seleccione un ítem del pedido:"),
-                tabla,
-                cantidadBox,
-                botones
-        );
-        layout.setPadding(new Insets(15));
-        layout.setStyle("-fx-background-color: #f8f9fa;");
-
-        stage.setScene(new Scene(layout, 500, 450));
-        stage.showAndWait();
-    }
-
-    private void agregarAlPedido(Mesa mesa) {
-
-        Stage stage = new Stage();
-        stage.setTitle("Agregar ítem a la mesa " + mesa.getNumeroDeMesa());
-        stage.initModality(Modality.APPLICATION_MODAL);
-
-        List<ItemMenu> items = new ArrayList<>(miRestaurante.getMenu().getItems());
-        items.sort(Comparator.comparing(ItemMenu::getNombre));
-
-        TableView<ItemMenu> tablaItems = new TableView<>();
-        TableColumn<ItemMenu, String> colNombre = new TableColumn<>("Nombre");
-        TableColumn<ItemMenu, String> colCategoria = new TableColumn<>("Categoría");
-        TableColumn<ItemMenu, Double> colPrecio = new TableColumn<>("Precio");
-
-        colNombre.setCellValueFactory(cell -> new ReadOnlyStringWrapper(cell.getValue().getNombre()));
-        colCategoria.setCellValueFactory(cell -> new ReadOnlyStringWrapper(cell.getValue().getCategoria().toString()));
-        colPrecio.setCellValueFactory(cell -> new ReadOnlyObjectWrapper<>(cell.getValue().getPrecio()));
-
-        tablaItems.getColumns().addAll(colNombre, colCategoria, colPrecio);
-        tablaItems.getItems().addAll(items);
-
-        tablaItems.setPrefHeight(300);
-
-        Label lblCantidad = new Label("Cantidad:");
-        Spinner<Integer> spnCantidad = new Spinner<>(1, 10, 1);
-        spnCantidad.setEditable(true);
-        HBox cantidadBox = new HBox(10, lblCantidad, spnCantidad);
-        cantidadBox.setAlignment(Pos.CENTER_LEFT);
-
-        Button btnAgregar = new Button("Agregar");
-        Button btnCancelar = new Button("Cancelar");
-        HBox botonesBox = new HBox(10, btnAgregar, btnCancelar);
-        botonesBox.setAlignment(Pos.CENTER_RIGHT);
-
-        btnAgregar.setOnAction(e -> {
-            ItemMenu seleccionado = tablaItems.getSelectionModel().getSelectedItem();
-            int cantidad = spnCantidad.getValue();
-
-            if (seleccionado == null) {
-                Alert alerta = new Alert(Alert.AlertType.WARNING, "¡Seleccione un ítem del menú!.");
-                alerta.showAndWait();
-                return;
-            }
-
-            ConsumoMesa consumo = miRestaurante.getConsumosActivosPorMesa().get(mesa.getNumeroDeMesa());
-
-            consumo.agregarItem(seleccionado, cantidad);
-
-            stage.close();
-        });
-
-        btnCancelar.setOnAction(e -> stage.close());
-
-        VBox layout = new VBox(15,
-                new Label("Seleccione un ítem del menú:"),
-                tablaItems,
-                cantidadBox,
-                botonesBox
-        );
-        layout.setPadding(new Insets(15));
-        layout.setStyle("-fx-background-color: #f8f9fa;");
-
-        stage.setScene(new Scene(layout, 500, 450));
-        stage.showAndWait();
     }
 
     public void mostrarConsumoMesa(Mesa mesa) {
         ConsumoMesa consumo = miRestaurante.getConsumosActivosPorMesa().get(mesa.getNumeroDeMesa());
 
+        // Crear ventana nueva
         Stage stage = new Stage();
         stage.setTitle("Consumo: Mesa " + mesa.getNumeroDeMesa());
         stage.initModality(Modality.APPLICATION_MODAL); // bloquea la ventana principal
 
+        // Encabezado
         Label lblTitulo = new Label("Mesa " + mesa.getNumeroDeMesa());
         lblTitulo.setStyle("-fx-font-size: 18px; -fx-font-weight: bold;");
 
+        // Tabla
         TableView<Map.Entry<ItemMenu, Integer>> tabla = new TableView<>();
         TableColumn<Map.Entry<ItemMenu, Integer>, String> colProducto = new TableColumn<>("Producto");
         TableColumn<Map.Entry<ItemMenu, Integer>, Integer> colCantidad = new TableColumn<>("Cantidad");
@@ -297,9 +157,11 @@ public class MozosController {
         tabla.getColumns().addAll(colProducto, colCantidad, colPrecio, colSubtotal);
         tabla.getItems().addAll(consumo.getConsumo().entrySet());
 
+        // Total
         Label lblTotal = new Label("TOTAL: $" + String.format("%.2f", consumo.getPrecioTotal()));
         lblTotal.setStyle("-fx-font-size: 16px; -fx-font-weight: bold;");
 
+        // Layout
         VBox layout = new VBox(10, lblTitulo, tabla, lblTotal);
         layout.setStyle("-fx-padding: 15; -fx-background-color: #f8f9fa;");
         Scene scene = new Scene(layout, 500, 400);
@@ -331,6 +193,7 @@ public class MozosController {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("hello-view.fxml"));
             Scene scene = new Scene(loader.load());
 
+            // Obtener el controlador del login
             HelloController helloController = loader.getController();
             helloController.setRestaurante(miRestaurante);
 
@@ -343,7 +206,4 @@ public class MozosController {
             e.printStackTrace();
         }
     }
-
 }
-
-
