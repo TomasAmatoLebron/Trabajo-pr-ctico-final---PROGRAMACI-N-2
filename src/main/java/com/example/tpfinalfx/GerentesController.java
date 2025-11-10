@@ -408,6 +408,27 @@ public class GerentesController {
 
     @FXML
     public void finalizarJornada() {
+        Alert alerta = new Alert(Alert.AlertType.CONFIRMATION);
+        alerta.setTitle("Confirmar cierre");
+        alerta.setHeaderText(null);
+        alerta.setContentText("¿Confirmar cierre de jornada?");
+
+        ButtonType botonAceptar = new ButtonType("Aceptar");
+        ButtonType botonCancelar = new ButtonType("Cancelar", ButtonBar.ButtonData.CANCEL_CLOSE);
+        alerta.getButtonTypes().setAll(botonAceptar, botonCancelar);
+
+        alerta.showAndWait().ifPresent(respuesta -> {
+            if (respuesta == botonAceptar) {
+
+                miRestaurante.terminarJornada();
+
+                Alert info = new Alert(Alert.AlertType.INFORMATION);
+                info.setTitle("Jornada finalizada");
+                info.setHeaderText(null);
+                info.setContentText("La jornada se cerró correctamente.");
+                info.showAndWait();
+            }
+        });
     }
 
     @FXML
