@@ -1,7 +1,5 @@
 package com.example.tpfinalfx;
 
-import com.example.tpfinalfx.model.GerentesController;
-import com.example.tpfinalfx.model.entities.Cajero;
 import com.example.tpfinalfx.model.entities.Empleado;
 import com.example.tpfinalfx.model.entities.Restaurante;
 import com.example.tpfinalfx.model.exceptions.PasswordInvalidaException;
