@@ -292,57 +292,54 @@ public class GerentesController {
         ventana.setTitle("Agregar nuevo ítem al menú");
 
         TextField nombreField = new TextField();
+        nombreField.setPromptText("Nombre");
+
         TextField precioField = new TextField();
+        precioField.setPromptText("Precio");
+
+        TextField descripcionField = new TextField();
+        descripcionField.setPromptText("Descripción");
+
         ComboBox<ETipoProducto> categoriaBox = new ComboBox<>();
-        categoriaBox.getItems().addAll(ETipoProducto.values());
-        TextArea descripcionArea = new TextArea();
+        categoriaBox.getItems().setAll(ETipoProducto.values());
+        categoriaBox.setPromptText("Categoría");
 
-        Label lblNombre = new Label("Nombre:");
-        Label lblPrecio = new Label("Precio:");
-        Label lblCategoria = new Label("Categoría:");
-        Label lblDescripcion = new Label("Descripción:");
-
-        Button btnAceptar = new Button("Agregar");
+        Button btnAgregar = new Button("Agregar");
+        btnAgregar.setStyle("-fx-background-color: #28a745; -fx-text-fill: white;");
         Button btnCancelar = new Button("Cancelar");
 
-        HBox botones = new HBox(10, btnAceptar, btnCancelar);
+        HBox botones = new HBox(10, btnAgregar, btnCancelar);
         botones.setAlignment(Pos.CENTER_RIGHT);
 
         GridPane grid = new GridPane();
-        grid.setVgap(10);
         grid.setHgap(10);
+        grid.setVgap(15);
         grid.setPadding(new Insets(20));
 
-        grid.add(lblNombre, 0, 0);
+        grid.add(new Label("Nombre:"), 0, 0);
         grid.add(nombreField, 1, 0);
-        grid.add(lblPrecio, 0, 1);
+        grid.add(new Label("Precio:"), 0, 1);
         grid.add(precioField, 1, 1);
-        grid.add(lblCategoria, 0, 2);
-        grid.add(categoriaBox, 1, 2);
-        grid.add(lblDescripcion, 0, 3);
-        grid.add(descripcionArea, 1, 3);
+        grid.add(new Label("Descripción:"), 0, 2);
+        grid.add(descripcionField, 1, 2);
+        grid.add(new Label("Categoría:"), 0, 3);
+        grid.add(categoriaBox, 1, 3);
         grid.add(botones, 1, 4);
 
-        Scene scene = new Scene(grid, 400, 350);
+        Scene scene = new Scene(grid, 400, 300);
         ventana.setScene(scene);
         ventana.show();
 
-        btnAceptar.setOnAction(e -> {
-            try {
-                String nombre = nombreField.getText().trim();
-                double precio = Double.parseDouble(precioField.getText().trim());
-                ETipoProducto categoria = categoriaBox.getValue();
-                String descripcion = descripcionArea.getText().trim();
+        btnAgregar.setOnAction(e -> {
+            String nombre = nombreField.getText().trim();
+            double precio = Double.parseDouble(precioField.getText().trim());
+            String descripcion = descripcionField.getText().trim();
+            ETipoProducto categoria = categoriaBox.getValue();
 
-
-                ItemMenu nuevoItem = new ItemMenu(nombre, precio, categoria, descripcion);
-
-                miRestaurante.agregarMenu(nuevoItem);
-                miRestaurante.guardarMenu();
-
-            } catch (NumberFormatException ex) {
-                ex.printStackTrace();
-            }
+            ItemMenu nuevo = new ItemMenu(nombre, precio, categoria, descripcion);
+            miRestaurante.agregarMenu(nuevo);
+            miRestaurante.guardarMenu();
+            ventana.close();
         });
 
         btnCancelar.setOnAction(e -> ventana.close());
