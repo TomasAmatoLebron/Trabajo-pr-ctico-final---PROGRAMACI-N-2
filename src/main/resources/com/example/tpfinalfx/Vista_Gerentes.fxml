@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<BorderPane prefHeight="650.0" prefWidth="1000.0" style="-fx-background-color: #f8f9fa;" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.tpfinalfx.GerentesController">
+
+    <center>
+        <GridPane alignment="CENTER" hgap="20" vgap="20">
+            <columnConstraints>
+                <ColumnConstraints percentWidth="33.33" />
+                <ColumnConstraints percentWidth="33.33" />
+                <ColumnConstraints percentWidth="33.33" />
+            </columnConstraints>
+
+            <rowConstraints>
+                <RowConstraints percentHeight="20" />
+                <RowConstraints percentHeight="25" />
+                <RowConstraints percentHeight="25" />
+                <RowConstraints percentHeight="25" />
+            </rowConstraints>
+
+            <Text fill="#e82121" style="-fx-font-size: 24px; -fx-font-weight: bold;" text="EMPLEADOS" GridPane.columnIndex="0" GridPane.halignment="CENTER" GridPane.rowIndex="0" />
+            <Button fx:id="verEmp" maxWidth="200" text="Ver empleados" GridPane.columnIndex="0" GridPane.rowIndex="1">
+                <font><Font size="20.0" /></font>
+                <GridPane.margin><Insets left="50.0" /></GridPane.margin>
+            </Button>
+            <Button fx:id="aggEmp" maxWidth="200" text="Agregar empleado" GridPane.columnIndex="0" GridPane.rowIndex="2">
+                <font><Font size="20.0" /></font>
+                <GridPane.margin><Insets left="50.0" /></GridPane.margin>
+            </Button>
+            <Button fx:id="eliEmp" maxWidth="200" text="Eliminar empleado" GridPane.columnIndex="0" GridPane.rowIndex="3">
+                <font><Font size="19.0" /></font>
+                <GridPane.margin><Insets left="50.0" /></GridPane.margin>
+            </Button>
+
+            <Text style="-fx-font-size: 24px; -fx-font-weight: bold; -fx-fill: #e82121;" text="MENÚ" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="0" />
+            <Button fx:id="verM" maxWidth="200" text="Ver menú" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                <font><Font size="20.0" /></font>
+                <GridPane.margin><Insets left="50.0" /></GridPane.margin>
+            </Button>
+            <Button fx:id="aggM" maxWidth="200" text="Agregar Item" GridPane.columnIndex="1" GridPane.rowIndex="2">
+                <font><Font size="20.0" /></font>
+                <GridPane.margin><Insets left="50.0" /></GridPane.margin>
+            </Button>
+            <Button fx:id="eliM" maxWidth="200" text="Eliminar Item" GridPane.columnIndex="1" GridPane.rowIndex="3">
+                <font><Font size="20.0" /></font>
+                <GridPane.margin><Insets left="50.0" /></GridPane.margin>
+            </Button>
+
+            <!-- ===== COLUMNA MESAS ===== -->
+            <Text style="-fx-font-size: 24px; -fx-font-weight: bold; -fx-fill: #e82121;" text="MESAS" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="0" />
+            <Button fx:id="verMes" maxWidth="200" text="Ver mesas" GridPane.columnIndex="2" GridPane.rowIndex="1">
+                <font><Font size="20.0" /></font>
+                <GridPane.margin><Insets left="50.0" /></GridPane.margin>
+            </Button>
+            <Button fx:id="aggMes" maxWidth="200" text="Agregar mesa" GridPane.columnIndex="2" GridPane.rowIndex="2">
+                <font><Font size="20.0" /></font>
+                <GridPane.margin><Insets left="50.0" /></GridPane.margin>
+            </Button>
+            <Button fx:id="eliMes" maxWidth="200" text="Eliminar mesa" GridPane.columnIndex="2" GridPane.rowIndex="3">
+                <font><Font size="20.0" /></font>
+                <GridPane.margin><Insets left="50.0" /></GridPane.margin>
+            </Button>
+
+            <padding>
+                <Insets bottom="30" left="30" right="30" top="30" />
+            </padding>
+        </GridPane>
+    </center>
+
+    <bottom>
+        <HBox alignment="CENTER_RIGHT" prefHeight="50.0" style="-fx-border-color: #dee2e6; -fx-border-width: 1 0 0 0;">
+            <padding>
+                <Insets bottom="5" right="20" top="5" />
+            </padding>
+            <children>
+                <Button fx:id="cerrar" onAction="#cerrarSesion" prefHeight="35" prefWidth="140" style="-fx-background-color: #dc3545; -fx-text-fill: white;" text="Cerrar Sesión" />
+            </children>
+        </HBox>
+    </bottom>
+
+</BorderPane>

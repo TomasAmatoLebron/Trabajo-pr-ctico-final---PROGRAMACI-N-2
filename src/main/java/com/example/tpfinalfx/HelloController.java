@@ -1,5 +1,6 @@
 package com.example.tpfinalfx;
 
+import com.example.tpfinalfx.model.GerentesController;
 import com.example.tpfinalfx.model.entities.Cajero;
 import com.example.tpfinalfx.model.entities.Empleado;
 import com.example.tpfinalfx.model.entities.Restaurante;
@@ -95,6 +96,17 @@ public class HelloController {
                 Stage stage = (Stage) loginButton.getScene().getWindow();
                 stage.setScene(new Scene(root));
                 stage.setTitle("Panel de cajero");
+            }
+            else if (puesto.equals("Gerente")) {
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("Vista_Gerentes.fxml"));
+                Parent root = loader.load();
+
+                GerentesController gerentesController = loader.getController();
+                gerentesController.setRestaurante(this.restaurante);
+
+                Stage stage = (Stage) loginButton.getScene().getWindow();
+                stage.setScene(new Scene(root));
+                stage.setTitle("Panel de gerente");
             }
         } catch (IOException e) {
             e.printStackTrace();
