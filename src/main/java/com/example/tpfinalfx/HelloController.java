@@ -55,7 +55,7 @@ public class HelloController {
         if (empleado != null) {
             String puesto = empleado.getClass().getSimpleName();
             welcomeLabel.setText("¡Bienvenido/a, " + empleado.getNombre() + "! Puesto: " + puesto);
-            welcomeLabel.setStyle("-fx-text-fill: #28a745;"); // Color verde para éxito
+            welcomeLabel.setStyle("-fx-text-fill: #28a745;");
 
             loginButton.setDisable(true);
 

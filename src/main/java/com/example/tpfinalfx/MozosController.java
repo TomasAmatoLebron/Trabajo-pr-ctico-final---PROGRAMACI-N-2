@@ -211,7 +211,7 @@ public class MozosController {
         stage.setTitle("Agregar ítem a la mesa " + mesa.getNumeroDeMesa());
         stage.initModality(Modality.APPLICATION_MODAL);
 
-        List<ItemMenu> items = new ArrayList<>(miRestaurante.getMenu().getItems());
+        List<ItemMenu> items = new ArrayList<>(miRestaurante.getMenu().obtenerValores());
         items.sort(Comparator.comparing(ItemMenu::getNombre));
 
         TableView<ItemMenu> tablaItems = new TableView<>();

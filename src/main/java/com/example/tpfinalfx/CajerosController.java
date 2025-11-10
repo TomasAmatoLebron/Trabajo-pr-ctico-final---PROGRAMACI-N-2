@@ -193,7 +193,6 @@ public class CajerosController {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("hello-view.fxml"));
             Scene scene = new Scene(loader.load());
 
-            // Obtener el controlador del login
             HelloController helloController = loader.getController();
             helloController.setRestaurante(miRestaurante);
 
