@@ -1,6 +1,8 @@
 package com.example.tpfinalfx.model.entities;
 
 import com.example.tpfinalfx.model.enums.ETipoProducto;
+import com.example.tpfinalfx.model.exceptions.ElementoDuplicadoException;
+import com.example.tpfinalfx.model.exceptions.ElementoInexistenteException;
 import com.example.tpfinalfx.model.exceptions.PasswordInvalidaException;
 import com.example.tpfinalfx.model.interfaces.Administrador;
 import org.json.JSONArray;
@@ -29,6 +31,46 @@ public class Restaurante {
         mesasFromJSON();
         empleadosFromJSON();
         menuFromJSON();
+    }
+
+    public Gestora<Integer, Mesa> getGestoraMesas() {
+        return gestoraMesas;
+    }
+
+    public void setGestoraMesas(Gestora<Integer, Mesa> gestoraMesas) {
+        this.gestoraMesas = gestoraMesas;
+    }
+
+    public Gestora<String, Empleado> getGestoraEmpleados() {
+        return gestoraEmpleados;
+    }
+
+    public void setGestoraEmpleados(Gestora<String, Empleado> gestoraEmpleados) {
+        this.gestoraEmpleados = gestoraEmpleados;
+    }
+
+    public ConsumoDia getConsumoDelDia() {
+        return consumoDelDia;
+    }
+
+    public void setConsumoDelDia(ConsumoDia consumoDelDia) {
+        this.consumoDelDia = consumoDelDia;
+    }
+
+    public HashMap<Integer, ConsumoMesa> getConsumosActivosPorMesa() {
+        return consumosActivosPorMesa;
+    }
+
+    public void setConsumosActivosPorMesa(HashMap<Integer, ConsumoMesa> consumosActivosPorMesa) {
+        this.consumosActivosPorMesa = consumosActivosPorMesa;
+    }
+
+    public Gestora<String, ItemMenu> getMenu() {
+        return menu;
+    }
+
+    public void setMenu(Gestora<String, ItemMenu> menu) {
+        this.menu = menu;
     }
 
     public void menuFromJSON() {
@@ -97,73 +139,58 @@ public class Restaurante {
         }
     }
 
-
-    public Gestora<Integer, Mesa> getGestoraMesas() {
-        return gestoraMesas;
-    }
-
-    public void setGestoraMesas(Gestora<Integer, Mesa> gestoraMesas) {
-        this.gestoraMesas = gestoraMesas;
-    }
-
-    public Gestora<String, Empleado> getGestoraEmpleados() {
-        return gestoraEmpleados;
-    }
-
-    public void setGestoraEmpleados(Gestora<String, Empleado> gestoraEmpleados) {
-        this.gestoraEmpleados = gestoraEmpleados;
-    }
-
-    public ConsumoDia getConsumoDelDia() {
-        return consumoDelDia;
-    }
-
-    public void setConsumoDelDia(ConsumoDia consumoDelDia) {
-        this.consumoDelDia = consumoDelDia;
-    }
-
-    public HashMap<Integer, ConsumoMesa> getConsumosActivosPorMesa() {
-        return consumosActivosPorMesa;
-    }
-
-    public void setConsumosActivosPorMesa(HashMap<Integer, ConsumoMesa> consumosActivosPorMesa) {
-        this.consumosActivosPorMesa = consumosActivosPorMesa;
-    }
-
-    public Gestora<String, ItemMenu> getMenu() {
-        return menu;
-    }
-
-    public void setMenu(Gestora<String, ItemMenu> menu) {
-        this.menu = menu;
-    }
-
     public void agregarMenu(ItemMenu item) {
-        menu.agregar(item.getNombre(), item);
+        try {
+            menu.agregar(item.getNombre(), item);
+        } catch (ElementoDuplicadoException e) {
+            e.getMessage();
+        }
     }
 
     public void eliminarMenu(ItemMenu item) {
-        menu.eliminar(item.getNombre());
+        try {
+            menu.eliminar(item.getNombre());
+        }
+        catch (ElementoInexistenteException e) {
+            e.getMessage();
+        }
     }
 
     public void agregarMesa(Mesa mesa) {
-        gestoraMesas.agregar(mesa.getNumeroDeMesa(), mesa);
+        try {
+            gestoraMesas.agregar(mesa.getNumeroDeMesa(), mesa);
+        } catch (ElementoDuplicadoException e) {
+            e.getMessage();
+        }
     }
 
     public void agregarEmpleado(Empleado empleado) {
-        gestoraEmpleados.agregar(empleado.getDni(), empleado);
+        try {
+            gestoraEmpleados.agregar(empleado.getDni(), empleado);
+        }
+        catch (ElementoDuplicadoException e) {
+            e.getMessage();
+        }
     }
 
     public void eliminarMesa(Mesa mesa) {
-        gestoraMesas.eliminar(mesa.getNumeroDeMesa());
+        try {
+            gestoraMesas.eliminar(mesa.getNumeroDeMesa());
+        } catch (ElementoInexistenteException e) {
+            e.getMessage();
+        }
     }
 
     public void eliminarEmpleado(Empleado empleado) {
-        gestoraEmpleados.eliminar(empleado.getDni());
+        try {
+            gestoraEmpleados.eliminar(empleado.getDni());
+        } catch (ElementoInexistenteException e) {
+            e.getMessage();
+        }
     }
 
     public ConsumoMesa abrirMesa(int numeroMesa) {
-        Mesa mesaEncontrada = null;
+        Mesa mesaEncontrada = getGestoraMesas().obtenerMesa(numeroMesa);
         for (Mesa mesa : gestoraMesas.obtenerValores()) {
             if (mesa.getNumeroDeMesa() == numeroMesa) {
                 mesa.modificarEstadoMesa();
@@ -265,6 +292,9 @@ public class Restaurante {
 
     public void terminarJornada()
     {
+        for (Mesa mesa : gestoraMesas.obtenerValores()) {
+            cerrarMesa(mesa.getNumeroDeMesa());
+        }
         guardarEmpleados();
         guardarMesas();
         guardarConsumoDia();
