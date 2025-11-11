@@ -64,7 +64,7 @@ public class HelloController {
 
             PauseTransition delay = new PauseTransition(Duration.seconds(1.5));
             Empleado finalEmpleado = empleado;
-            delay.setOnFinished(event -> cambiarAMainView(finalEmpleado, puesto));
+            delay.setOnFinished(event -> cambiarAMainView(finalEmpleado));
             delay.play();
 
         }
@@ -74,7 +74,7 @@ public class HelloController {
         this.restaurante = restaurante;
     }
 
-    private void cambiarAMainView(Empleado empleado, String puesto) {
+    private void cambiarAMainView(Empleado empleado) {
         try {
             if (empleado instanceof Mozo) {
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("Vista_Mozos.fxml"));

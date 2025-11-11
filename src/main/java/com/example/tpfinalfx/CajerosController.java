@@ -92,10 +92,6 @@ public class CajerosController {
 
     private void abrirVentanaPago(Mesa mesa) {
         ConsumoMesa consumo = miRestaurante.getConsumosActivosPorMesa().get(mesa.getNumeroDeMesa());
-        if (consumo == null) {
-            new Alert(Alert.AlertType.ERROR, "No hay un consumo activo para esta mesa.", ButtonType.OK).showAndWait();
-            return;
-        }
 
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("Vista_pago.fxml"));
@@ -111,11 +107,8 @@ public class CajerosController {
 
 
             if (pagoController.isPagoExitoso()) {
-                System.out.println("El pago fue exitoso. Cerrando mesa...");
                 miRestaurante.cerrarMesa(mesa.getNumeroDeMesa());
                 actualizarVisualMesa(getBotonPorMesa(mesa), mesa);
-            } else {
-                System.out.println("El pago fue cancelado. La mesa no se cerrará.");
             }
 
         } catch (IOException e) {
