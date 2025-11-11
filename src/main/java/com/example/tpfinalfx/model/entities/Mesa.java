@@ -3,6 +3,8 @@ package com.example.tpfinalfx.model.entities;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.Objects;
+
 public class Mesa {
     private int numeroDeMesa;
     private boolean disponible;
@@ -51,4 +53,14 @@ public class Mesa {
         }
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (!(o instanceof Mesa mesa)) return false;
+        return numeroDeMesa == mesa.numeroDeMesa;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(numeroDeMesa);
+    }
 }

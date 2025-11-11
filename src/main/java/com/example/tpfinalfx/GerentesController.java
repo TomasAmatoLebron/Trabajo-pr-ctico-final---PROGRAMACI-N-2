@@ -158,10 +158,9 @@ public class GerentesController {
                     nuevoEmpleado = new Gerente(nombre, apellido, fecha, dni, password);
                     break;
             }
-
-            miRestaurante.agregarEmpleado(nuevoEmpleado);
-            popupStage.close();
-            miRestaurante.guardarEmpleados();
+                miRestaurante.agregarEmpleado(nuevoEmpleado);
+                popupStage.close();
+                miRestaurante.guardarEmpleados();
 
         });
 
@@ -601,4 +600,5 @@ public class GerentesController {
             e.printStackTrace();
         }
     }
+
 }

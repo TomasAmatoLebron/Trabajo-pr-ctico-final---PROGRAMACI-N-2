@@ -5,6 +5,8 @@ import com.example.tpfinalfx.model.exceptions.ElementoDuplicadoException;
 import com.example.tpfinalfx.model.exceptions.ElementoInexistenteException;
 import com.example.tpfinalfx.model.exceptions.PasswordInvalidaException;
 import com.example.tpfinalfx.model.interfaces.Administrador;
+import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -13,6 +15,7 @@ import org.json.JSONTokener;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
+import java.util.Optional;
 
 public class Restaurante {
 
@@ -143,7 +146,7 @@ public class Restaurante {
         try {
             menu.agregar(item.getNombre(), item);
         } catch (ElementoDuplicadoException e) {
-            e.getMessage();
+            mostrarAlertaElementoDuplicado();
         }
     }
 
@@ -152,7 +155,7 @@ public class Restaurante {
             menu.eliminar(item.getNombre());
         }
         catch (ElementoInexistenteException e) {
-            e.getMessage();
+            mostrarAlertaElementoInexistente();
         }
     }
 
@@ -160,16 +163,16 @@ public class Restaurante {
         try {
             gestoraMesas.agregar(mesa.getNumeroDeMesa(), mesa);
         } catch (ElementoDuplicadoException e) {
-            e.getMessage();
+            mostrarAlertaElementoDuplicado();
         }
     }
 
-    public void agregarEmpleado(Empleado empleado) {
+    public void agregarEmpleado(Empleado empleado) throws  ElementoDuplicadoException {
         try {
             gestoraEmpleados.agregar(empleado.getDni(), empleado);
         }
         catch (ElementoDuplicadoException e) {
-            e.getMessage();
+            mostrarAlertaElementoDuplicado();
         }
     }
 
@@ -177,7 +180,7 @@ public class Restaurante {
         try {
             gestoraMesas.eliminar(mesa.getNumeroDeMesa());
         } catch (ElementoInexistenteException e) {
-            e.getMessage();
+            mostrarAlertaElementoInexistente();
         }
     }
 
@@ -185,7 +188,7 @@ public class Restaurante {
         try {
             gestoraEmpleados.eliminar(empleado.getDni());
         } catch (ElementoInexistenteException e) {
-            e.getMessage();
+            mostrarAlertaElementoInexistente();
         }
     }
 
@@ -309,5 +312,34 @@ public class Restaurante {
             }
         }
         throw new PasswordInvalidaException("¡Contraseña inválida!");
+    }
+
+
+    private void mostrarAlertaElementoInexistente() {
+        Alert alerta = new Alert(Alert.AlertType.INFORMATION);
+        alerta.setTitle("Elemento no encontrado");
+        alerta.setHeaderText(null);
+        alerta.setContentText("No se ha encontrado el elemento ingresado.");
+
+        alerta.getButtonTypes().setAll(new ButtonType("Continuar"));
+
+        Optional<ButtonType> resultado = alerta.showAndWait();
+        if (resultado.isPresent()) {
+            alerta.close();
+        }
+    }
+
+    private void mostrarAlertaElementoDuplicado() {
+        Alert alerta = new Alert(Alert.AlertType.INFORMATION);
+        alerta.setTitle("Elemento duplicado");
+        alerta.setHeaderText(null);
+        alerta.setContentText("Ya se encuentra el elemento ingresado.");
+
+        alerta.getButtonTypes().setAll(new ButtonType("Continuar"));
+
+        Optional<ButtonType> resultado = alerta.showAndWait();
+        if (resultado.isPresent()) {
+            alerta.close();
+        }
     }
 }
