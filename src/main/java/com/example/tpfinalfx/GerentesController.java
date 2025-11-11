@@ -2,6 +2,7 @@ package com.example.tpfinalfx;
 
 import com.example.tpfinalfx.model.entities.*;
 import com.example.tpfinalfx.model.enums.ETipoProducto;
+import com.example.tpfinalfx.model.exceptions.ElementoDuplicadoException;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
