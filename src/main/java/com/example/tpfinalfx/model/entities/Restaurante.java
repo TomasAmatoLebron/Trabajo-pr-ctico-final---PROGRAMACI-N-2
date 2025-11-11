@@ -4,7 +4,6 @@ import com.example.tpfinalfx.model.enums.ETipoProducto;
 import com.example.tpfinalfx.model.exceptions.ElementoDuplicadoException;
 import com.example.tpfinalfx.model.exceptions.ElementoInexistenteException;
 import com.example.tpfinalfx.model.exceptions.PasswordInvalidaException;
-import com.example.tpfinalfx.model.interfaces.Administrador;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
 import org.json.JSONArray;
@@ -142,7 +141,7 @@ public class Restaurante {
         }
     }
 
-    public void agregarMenu(ItemMenu item) {
+    public void agregar(ItemMenu item) {
         try {
             menu.agregar(item.getNombre(), item);
         } catch (ElementoDuplicadoException e) {
@@ -159,7 +158,7 @@ public class Restaurante {
         }
     }
 
-    public void agregarMesa(Mesa mesa) {
+    public void agregar(Mesa mesa) {
         try {
             gestoraMesas.agregar(mesa.getNumeroDeMesa(), mesa);
         } catch (ElementoDuplicadoException e) {

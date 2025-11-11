@@ -2,7 +2,6 @@ package com.example.tpfinalfx;
 
 import com.example.tpfinalfx.model.entities.*;
 import com.example.tpfinalfx.model.enums.ETipoProducto;
-import com.example.tpfinalfx.model.exceptions.ElementoDuplicadoException;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -336,7 +335,7 @@ public class GerentesController {
             ETipoProducto categoria = categoriaBox.getValue();
 
             ItemMenu nuevo = new ItemMenu(nombre, precio, categoria, descripcion);
-            miRestaurante.agregarMenu(nuevo);
+            miRestaurante.agregar(nuevo);
             miRestaurante.guardarMenu();
             ventana.close();
         });
@@ -487,7 +486,7 @@ public class GerentesController {
             String numeroTexto = campoNumero.getText().trim();
 
             Mesa nuevaMesa = new Mesa(Integer.parseInt(numeroTexto));
-            miRestaurante.agregarMesa(nuevaMesa);
+            miRestaurante.agregar(nuevaMesa);
             popupStage.close();
             miRestaurante.guardarMesas();
         });
