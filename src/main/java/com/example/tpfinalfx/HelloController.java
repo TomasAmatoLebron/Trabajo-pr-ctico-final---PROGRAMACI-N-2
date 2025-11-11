@@ -1,8 +1,11 @@
 package com.example.tpfinalfx;
 
+import com.example.tpfinalfx.model.entities.Cajero;
 import com.example.tpfinalfx.model.entities.Empleado;
+import com.example.tpfinalfx.model.entities.Mozo;
 import com.example.tpfinalfx.model.entities.Restaurante;
 import com.example.tpfinalfx.model.exceptions.PasswordInvalidaException;
+import com.example.tpfinalfx.model.interfaces.Administrador;
 import javafx.animation.PauseTransition;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -60,7 +63,8 @@ public class HelloController {
             loginButton.setDisable(true);
 
             PauseTransition delay = new PauseTransition(Duration.seconds(1.5));
-            delay.setOnFinished(event -> cambiarAMainView(puesto));
+            Empleado finalEmpleado = empleado;
+            delay.setOnFinished(event -> cambiarAMainView(finalEmpleado, puesto));
             delay.play();
 
         }
@@ -70,9 +74,9 @@ public class HelloController {
         this.restaurante = restaurante;
     }
 
-    private void cambiarAMainView(String puesto) {
+    private void cambiarAMainView(Empleado empleado, String puesto) {
         try {
-            if (Objects.equals(puesto, "Mozo")) {
+            if (empleado instanceof Mozo) {
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("Vista_Mozos.fxml"));
                 Parent root = loader.load();
 
@@ -84,7 +88,7 @@ public class HelloController {
                 stage.setScene(new Scene(root));
                 stage.setTitle("Panel de mozo");
             }
-            else if (puesto.equals("Cajero")) {
+            else if (empleado instanceof Cajero) {
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("Vista_Cajeros.fxml"));
                 Parent root = loader.load();
 
@@ -95,7 +99,7 @@ public class HelloController {
                 stage.setScene(new Scene(root));
                 stage.setTitle("Panel de cajero");
             }
-            else if (puesto.equals("Gerente")) {
+            else if (empleado instanceof Administrador) {
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("Vista_Gerentes.fxml"));
                 Parent root = loader.load();
 
