@@ -216,7 +216,6 @@ public class GerentesController {
             tabla.setItems(FXCollections.observableArrayList(miRestaurante.getGestoraEmpleados().obtenerValores()));
         }
 
-        // Botones
         Button btnEliminar = new Button("Eliminar seleccionado");
         btnEliminar.setStyle("-fx-background-color: #dc3545; -fx-text-fill: white;");
         Button btnCancelar = new Button("Cancelar");
@@ -415,15 +414,12 @@ public class GerentesController {
         popupStage.setTitle("Listado de Mesas");
         popupStage.initModality(Modality.APPLICATION_MODAL);
 
-        // === Crear la tabla ===
         TableView<Mesa> tabla = new TableView<>();
 
-        // Columna: Número de mesa
         TableColumn<Mesa, Integer> colNumero = new TableColumn<>("Número de Mesa");
         colNumero.setCellValueFactory(new PropertyValueFactory<>("numeroDeMesa"));
         colNumero.setPrefWidth(150);
 
-        // Columna: Disponible
         TableColumn<Mesa, String> colDisponible = new TableColumn<>("Estado");
         colDisponible.setCellValueFactory(cellData -> {
             boolean disponible = cellData.getValue().isDisponible();
@@ -444,7 +440,6 @@ public class GerentesController {
         );
         tabla.setItems(listaMesas);
 
-        // === Botón de cierre ===
         Button cerrarBtn = new Button("Cerrar");
         cerrarBtn.setStyle("-fx-background-color: #dc3545; -fx-text-fill: white;");
         cerrarBtn.setOnAction(e -> popupStage.close());
