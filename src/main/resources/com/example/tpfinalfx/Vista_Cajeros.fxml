@@ -15,7 +15,6 @@
 
 <BorderPane prefHeight="600.0" prefWidth="800.0" style="-fx-background-color: #E6E8F0;" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.tpfinalfx.CajerosController">
    <bottom>
-      <!-- BARRA INFERIOR -->
       <HBox alignment="CENTER_RIGHT" prefHeight="50.0" prefWidth="589.0" style="-fx-border-color: #dee2e6; -fx-border-width: 1 0 0 0;">
          <padding><Insets right="10.0" /></padding>
          <children>
