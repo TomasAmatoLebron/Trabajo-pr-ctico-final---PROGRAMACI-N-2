@@ -5,6 +5,7 @@ import com.example.tpfinalfx.model.enums.ETipoProducto;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.collections.transformation.FilteredList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
@@ -65,20 +66,23 @@ public class GerentesController {
 
     @FXML
     public void verEmpleados() {
+        ObservableList<Empleado> empleados = FXCollections.observableArrayList(
+                miRestaurante.getGestoraEmpleados().obtenerValores()
+        );
 
-        ObservableList<Empleado> empleados = FXCollections.observableArrayList(miRestaurante.getGestoraEmpleados().obtenerValores());
 
-        TableView<Empleado> tabla = new TableView<>(empleados);
+        FilteredList<Empleado> filtrados = new FilteredList<>(empleados, p -> true);
+
+
+        TableView<Empleado> tabla = new TableView<>(filtrados);
+
 
         TableColumn<Empleado, String> colDni = new TableColumn<>("DNI");
         colDni.setCellValueFactory(new PropertyValueFactory<>("dni"));
-
         TableColumn<Empleado, String> colNombre = new TableColumn<>("Nombre");
         colNombre.setCellValueFactory(new PropertyValueFactory<>("nombre"));
-
         TableColumn<Empleado, String> colApellido = new TableColumn<>("Apellido");
         colApellido.setCellValueFactory(new PropertyValueFactory<>("apellido"));
-
         TableColumn<Empleado, String> colFecha = new TableColumn<>("Fecha de Nacimiento");
         colFecha.setCellValueFactory(cellData -> javafx.beans.binding.Bindings.createStringBinding(() -> {
             if (cellData.getValue().getFechaDeNacimiento() != null) {
@@ -88,24 +92,38 @@ public class GerentesController {
             }
         }));
 
+
         TableColumn<Empleado, String> colPuesto = new TableColumn<>("Puesto");
         colPuesto.setCellValueFactory(cellData ->
                 javafx.beans.binding.Bindings.createStringBinding(() ->
                         cellData.getValue().getClass().getSimpleName()));
 
+
         tabla.getColumns().addAll(colDni, colNombre, colApellido, colFecha, colPuesto);
-
         tabla.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
-        tabla.setPrefHeight(400);
 
-        VBox layout = new VBox(10);
-        layout.setStyle("-fx-background-color: #ffffff; -fx-padding: 15;");
-        layout.getChildren().add(tabla);
+
+// Barra de búsqueda
+        TextField campoBusqueda = new TextField();
+        campoBusqueda.setPromptText("Buscar por nombre...");
+
+
+        campoBusqueda.textProperty().addListener((obs, oldValue, newValue) -> {
+            filtrados.setPredicate(emp -> {
+                if (newValue == null || newValue.isBlank()) return true;
+                return emp.getNombre().toLowerCase().contains(newValue.toLowerCase());
+            });
+        });
+
+
+        VBox layout = new VBox(10, campoBusqueda, tabla);
+        layout.setPadding(new Insets(15));
+
 
         Stage popup = new Stage();
         popup.initModality(Modality.APPLICATION_MODAL);
         popup.setTitle("Listado de Empleados");
-        popup.setScene(new Scene(layout, 600, 400));
+        popup.setScene(new Scene(layout, 600, 450));
         popup.showAndWait();
     }
 
@@ -157,7 +175,7 @@ public class GerentesController {
                     nuevoEmpleado = new Gerente(nombre, apellido, fecha, dni, password);
                     break;
             }
-                miRestaurante.agregarEmpleado(nuevoEmpleado);
+                miRestaurante.agregar(nuevoEmpleado);
                 popupStage.close();
                 miRestaurante.guardarEmpleados();
 
@@ -229,7 +247,7 @@ public class GerentesController {
 
             confirmacion.showAndWait().ifPresent(response -> {
                 if (response == ButtonType.OK) {
-                    miRestaurante.eliminarEmpleado(seleccionado);
+                    miRestaurante.eliminar(seleccionado);
                     tabla.getItems().remove(seleccionado);
                     miRestaurante.guardarEmpleados();
                 }
@@ -255,32 +273,47 @@ public class GerentesController {
         Stage ventana = new Stage();
         ventana.setTitle("Listado del Menú");
 
-        TableView<ItemMenu> tabla = new TableView<>();
+
+        ObservableList<ItemMenu> items = FXCollections.observableArrayList(
+                miRestaurante.getMenu().obtenerValores()
+        );
+        FilteredList<ItemMenu> filtrados = new FilteredList<>(items, p -> true);
+
+
+        TableView<ItemMenu> tabla = new TableView<>(filtrados);
+
 
         TableColumn<ItemMenu, String> colNombre = new TableColumn<>("Nombre");
         colNombre.setCellValueFactory(new PropertyValueFactory<>("nombre"));
-
         TableColumn<ItemMenu, Double> colPrecio = new TableColumn<>("Precio");
         colPrecio.setCellValueFactory(new PropertyValueFactory<>("precio"));
-
         TableColumn<ItemMenu, ETipoProducto> colCategoria = new TableColumn<>("Categoría");
         colCategoria.setCellValueFactory(new PropertyValueFactory<>("categoria"));
-
         TableColumn<ItemMenu, String> colDescripcion = new TableColumn<>("Descripción");
         colDescripcion.setCellValueFactory(new PropertyValueFactory<>("descripcion"));
 
-        tabla.getColumns().addAll(colNombre, colPrecio, colCategoria, colDescripcion);
 
+        tabla.getColumns().addAll(colNombre, colPrecio, colCategoria, colDescripcion);
         tabla.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
 
-        tabla.setItems(FXCollections.observableArrayList(miRestaurante.getMenu().obtenerValores()));
 
-        VBox layout = new VBox(10);
+        TextField campoBusqueda = new TextField();
+        campoBusqueda.setPromptText("Buscar por nombre...");
+
+
+        campoBusqueda.textProperty().addListener((obs, oldVal, newVal) -> {
+            filtrados.setPredicate(item -> {
+                if (newVal == null || newVal.isBlank()) return true;
+                return item.getNombre().toLowerCase().contains(newVal.toLowerCase());
+            });
+        });
+
+
+        VBox layout = new VBox(10, campoBusqueda, tabla);
         layout.setPadding(new Insets(15));
-        layout.getChildren().addAll(new Text("Listado de Ítems del Menú:"), tabla);
 
-        Scene escena = new Scene(layout, 700, 400);
-        ventana.setScene(escena);
+
+        ventana.setScene(new Scene(layout, 700, 450));
         ventana.show();
     }
 
@@ -398,7 +431,7 @@ public class GerentesController {
             Optional<ButtonType> resultado = confirmacion.showAndWait();
 
             if (resultado.isPresent() && resultado.get() == ButtonType.OK) {
-                miRestaurante.eliminarMenu(seleccionado);
+                miRestaurante.eliminar(seleccionado);
                 items.remove(seleccionado);
                 miRestaurante.guardarMenu();
             }
@@ -541,7 +574,7 @@ public class GerentesController {
 
             confirmacion.showAndWait().ifPresent(response -> {
                 if (response == ButtonType.OK) {
-                    miRestaurante.eliminarMesa(seleccionada);
+                    miRestaurante.eliminar(seleccionada);
                     tablaMesas.getItems().remove(seleccionada);
                     miRestaurante.guardarMesas();
                 }

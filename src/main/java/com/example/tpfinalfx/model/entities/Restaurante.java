@@ -149,7 +149,7 @@ public class Restaurante {
         }
     }
 
-    public void eliminarMenu(ItemMenu item) {
+    public void eliminar(ItemMenu item) {
         try {
             menu.eliminar(item.getNombre());
         }
@@ -166,7 +166,7 @@ public class Restaurante {
         }
     }
 
-    public void agregarEmpleado(Empleado empleado) throws  ElementoDuplicadoException {
+    public void agregar(Empleado empleado) throws  ElementoDuplicadoException {
         try {
             gestoraEmpleados.agregar(empleado.getDni(), empleado);
         }
@@ -175,7 +175,7 @@ public class Restaurante {
         }
     }
 
-    public void eliminarMesa(Mesa mesa) {
+    public void eliminar(Mesa mesa) {
         try {
             gestoraMesas.eliminar(mesa.getNumeroDeMesa());
         } catch (ElementoInexistenteException e) {
@@ -183,7 +183,7 @@ public class Restaurante {
         }
     }
 
-    public void eliminarEmpleado(Empleado empleado) {
+    public void eliminar(Empleado empleado) {
         try {
             gestoraEmpleados.eliminar(empleado.getDni());
         } catch (ElementoInexistenteException e) {
