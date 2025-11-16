@@ -10,11 +10,11 @@ public abstract class Empleado {
     private String nombre;
     private String apellido;
     private LocalDate fechaDeNacimiento;
-    private String dni;
+    private Integer dni;
     private String password;
 
 
-    public Empleado(String nombre, String apellido, LocalDate fechaDeNacimiento, String dni, String password) {
+    public Empleado(String nombre, String apellido, LocalDate fechaDeNacimiento, Integer dni, String password) {
         this.nombre = nombre;
         this.apellido = apellido;
         this.fechaDeNacimiento = fechaDeNacimiento;
@@ -26,7 +26,7 @@ public abstract class Empleado {
         nombre = "a";
         apellido = "a";
         fechaDeNacimiento = LocalDate.of(2000, 1, 1);
-        dni = "a";
+        dni = 10000000;
         password = "a";
     }
 
@@ -42,7 +42,7 @@ public abstract class Empleado {
         return fechaDeNacimiento;
     }
 
-    public String getDni() {
+    public Integer getDni() {
         return dni;
     }
 
@@ -58,7 +58,7 @@ public abstract class Empleado {
         this.fechaDeNacimiento = fechaDeNacimiento;
     }
 
-    public void setDni(String dni) {
+    public void setDni(Integer dni) {
         this.dni = dni;
     }
 

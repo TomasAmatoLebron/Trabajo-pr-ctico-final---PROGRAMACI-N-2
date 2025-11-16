@@ -6,7 +6,7 @@ import java.time.LocalDate;
 
 public class Gerente extends Empleado implements Administrador {
 
-    public Gerente(String nombre, String apellido, LocalDate fechaDeNacimiento, String dni, String password) {
+    public Gerente(String nombre, String apellido, LocalDate fechaDeNacimiento, Integer dni, String password) {
         super(nombre, apellido, fechaDeNacimiento, dni, password);
     }
 

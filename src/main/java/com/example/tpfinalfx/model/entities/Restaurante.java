@@ -18,11 +18,11 @@ import java.util.Optional;
 
 public class Restaurante {
 
-    private Gestora<Integer, Mesa> gestoraMesas;
-    private Gestora<String, Empleado> gestoraEmpleados;
+    private Gestora<Mesa> gestoraMesas;
+    private Gestora<Empleado> gestoraEmpleados;
     private ConsumoDia consumoDelDia;
     private HashMap<Integer, ConsumoMesa> consumosActivosPorMesa;
-    private Gestora<String, ItemMenu> menu;
+    private Gestora<ItemMenu> menu;
 
     public Restaurante() {
         this.gestoraMesas = new Gestora<>();
@@ -35,19 +35,19 @@ public class Restaurante {
         menuFromJSON();
     }
 
-    public Gestora<Integer, Mesa> getGestoraMesas() {
+    public Gestora<Mesa> getGestoraMesas() {
         return gestoraMesas;
     }
 
-    public void setGestoraMesas(Gestora<Integer, Mesa> gestoraMesas) {
+    public void setGestoraMesas(Gestora<Mesa> gestoraMesas) {
         this.gestoraMesas = gestoraMesas;
     }
 
-    public Gestora<String, Empleado> getGestoraEmpleados() {
+    public Gestora<Empleado> getGestoraEmpleados() {
         return gestoraEmpleados;
     }
 
-    public void setGestoraEmpleados(Gestora<String, Empleado> gestoraEmpleados) {
+    public void setGestoraEmpleados(Gestora<Empleado> gestoraEmpleados) {
         this.gestoraEmpleados = gestoraEmpleados;
     }
 
@@ -67,11 +67,11 @@ public class Restaurante {
         this.consumosActivosPorMesa = consumosActivosPorMesa;
     }
 
-    public Gestora<String, ItemMenu> getMenu() {
+    public Gestora<ItemMenu> getMenu() {
         return menu;
     }
 
-    public void setMenu(Gestora<String, ItemMenu> menu) {
+    public void setMenu(Gestora<ItemMenu> menu) {
         this.menu = menu;
     }
 
@@ -85,11 +85,12 @@ public class Restaurante {
             for (int i = 0; i < arreglo.length(); i++) {
                 ItemMenu item = new ItemMenu();
                 JSONObject jsonMenu = arreglo.getJSONObject(i);
+                item.setId(jsonMenu.getInt("ID"));
                 item.setNombre(jsonMenu.getString("Nombre"));
                 item.setPrecio(jsonMenu.getDouble("Precio"));
                 item.setDescripcion(jsonMenu.getString("Descripcion"));
                 item.setCategoria(ETipoProducto.valueOf(jsonMenu.getString("Categoria")));
-                menu.agregar(item.getNombre(), item);
+                menu.agregar(item.getId(), item);
             }
         } catch (JSONException e) {
             e.printStackTrace();
@@ -128,7 +129,7 @@ public class Restaurante {
                 Empleado empleado = crearEmpleadoPorPuesto(puesto);
 
                 if (empleado != null) {
-                    empleado.setDni(empleadoJSON.getString("DNI"));
+                    empleado.setDni(empleadoJSON.getInt("DNI"));
                     empleado.setNombre(empleadoJSON.getString("Nombre"));
                     empleado.setApellido(empleadoJSON.getString("Apellido"));
                     empleado.setPassword(empleadoJSON.getString("Contraseña"));
@@ -143,7 +144,7 @@ public class Restaurante {
 
     public void agregar(ItemMenu item) {
         try {
-            menu.agregar(item.getNombre(), item);
+            menu.agregar(item.getId(), item);
         } catch (ElementoDuplicadoException e) {
             mostrarAlertaElementoDuplicado();
         }
@@ -151,7 +152,7 @@ public class Restaurante {
 
     public void eliminar(ItemMenu item) {
         try {
-            menu.eliminar(item.getNombre());
+            menu.eliminar(item.getId());
         }
         catch (ElementoInexistenteException e) {
             mostrarAlertaElementoInexistente();

@@ -4,7 +4,7 @@ import java.time.LocalDate;
 
 public class Cajero extends Empleado {
 
-    public Cajero(String nombre, String apellido, LocalDate fechaDeNacimiento, String dni, String password) {
+    public Cajero(String nombre, String apellido, LocalDate fechaDeNacimiento, Integer dni, String password) {
         super(nombre, apellido, fechaDeNacimiento, dni, password);
     }
 

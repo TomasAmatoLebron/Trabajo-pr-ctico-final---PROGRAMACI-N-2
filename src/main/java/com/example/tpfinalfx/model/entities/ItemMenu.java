@@ -7,6 +7,8 @@ import org.json.JSONObject;
 import java.util.Objects;
 
 public class ItemMenu {
+    private Integer id;
+    private static int contador = 0;
     private String nombre;
     private double precio;
     private ETipoProducto categoria;
@@ -14,6 +16,8 @@ public class ItemMenu {
 
 
     public ItemMenu(String nombre, double precio, ETipoProducto categoria, String descripcion) {
+        contador++;
+        id = contador;
         this.nombre = nombre;
         this.precio = precio;
         this.categoria = categoria;
@@ -21,10 +25,20 @@ public class ItemMenu {
     }
 
     public ItemMenu() {
+        contador++;
+        id = contador;
         nombre = "a";
         precio = 0.0;
         categoria = ETipoProducto.PRINCIPAL;
         descripcion = "a";
+    }
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
     }
 
     public String getNombre() {
@@ -67,6 +81,7 @@ public class ItemMenu {
     public JSONObject toJSON() {
         try {
             JSONObject json = new JSONObject();
+            json.put("ID", id);
             json.put("Nombre", nombre);
             json.put("Precio", precio);
             json.put("Categoria", ETipoProducto.valueOf(categoria.toString()));

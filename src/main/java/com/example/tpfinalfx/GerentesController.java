@@ -158,7 +158,7 @@ public class GerentesController {
         btnAgregar.setOnAction(e -> {
             String nombre = nombreField.getText();
             String apellido = apellidoField.getText();
-            String dni = dniField.getText();
+            Integer dni = Integer.valueOf(dniField.getText());
             LocalDate fecha = fechaPicker.getValue();
             String password = passwordField.getText();
             String puesto = puestoBox.getValue();

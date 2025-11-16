@@ -7,33 +7,33 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Set;
 
-public class Gestora<K, T> {
+public class Gestora<T> {
 
-    private HashMap<K, T> listado;
+    private HashMap<Integer, T> listado;
 
     public Gestora() {
         listado = new HashMap<>();
     }
 
-    public boolean agregar(K k, T t) throws ElementoDuplicadoException {
-        if (!listado.containsKey(k)) {
-            listado.put(k, t);
+    public boolean agregar(Integer num, T t) throws ElementoDuplicadoException {
+        if (!listado.containsKey(num)) {
+            listado.put(num, t);
             return true;
         } else {
             throw new ElementoDuplicadoException("¡Ya se encuentra el elemento ingresado!");
         }
     }
 
-    public boolean eliminar(K k) throws ElementoInexistenteException {
-        if (listado.containsKey(k)) {
-            listado.remove(k);
+    public boolean eliminar(Integer num) throws ElementoInexistenteException {
+        if (listado.containsKey(num)) {
+            listado.remove(num);
             return true;
         } else {
             throw new ElementoInexistenteException("¡No se encuentra el elemento ingresado!");
         }
     }
 
-    public Set<K> obtenerClave() {
+    public Set<Integer> obtenerClave() {
         return listado.keySet();
     }
 
@@ -41,8 +41,8 @@ public class Gestora<K, T> {
         return listado.values();
     }
 
-    public T obtenerMesa(K k) {
-        return listado.get(k);
+    public T obtenerMesa(Integer num) {
+        return listado.get(num);
     }
 
 }
