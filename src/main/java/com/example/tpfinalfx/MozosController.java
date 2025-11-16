@@ -6,6 +6,8 @@ import com.example.tpfinalfx.model.entities.Mesa;
 import com.example.tpfinalfx.model.entities.Restaurante;
 import javafx.beans.property.ReadOnlyObjectWrapper;
 import javafx.beans.property.ReadOnlyStringWrapper;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
@@ -211,8 +213,24 @@ public class MozosController {
         stage.setTitle("Agregar ítem a la mesa " + mesa.getNumeroDeMesa());
         stage.initModality(Modality.APPLICATION_MODAL);
 
-        List<ItemMenu> items = new ArrayList<>(miRestaurante.getMenu().obtenerValores());
-        items.sort(Comparator.comparing(ItemMenu::getNombre));
+        List<ItemMenu> itemsOriginal = new ArrayList<>(miRestaurante.getMenu().obtenerValores());
+        itemsOriginal.sort(Comparator.comparing(ItemMenu::getNombre));
+
+        ObservableList<ItemMenu> itemsFiltrados = FXCollections.observableArrayList(itemsOriginal);
+
+        TextField txtBuscar = new TextField();
+        txtBuscar.setPromptText("Buscar por nombre...");
+        txtBuscar.setPrefWidth(250);
+
+        txtBuscar.textProperty().addListener((obs, oldValue, newValue) -> {
+            String texto = newValue.toLowerCase();
+
+            itemsFiltrados.setAll(
+                    itemsOriginal.stream()
+                            .filter(it -> it.getNombre().toLowerCase().contains(texto))
+                            .toList()
+            );
+        });
 
         TableView<ItemMenu> tablaItems = new TableView<>();
         TableColumn<ItemMenu, String> colNombre = new TableColumn<>("Nombre");
@@ -224,18 +242,19 @@ public class MozosController {
         colPrecio.setCellValueFactory(cell -> new ReadOnlyObjectWrapper<>(cell.getValue().getPrecio()));
 
         tablaItems.getColumns().addAll(colNombre, colCategoria, colPrecio);
-        tablaItems.getItems().addAll(items);
-
+        tablaItems.setItems(itemsFiltrados);
         tablaItems.setPrefHeight(300);
 
         Label lblCantidad = new Label("Cantidad:");
         Spinner<Integer> spnCantidad = new Spinner<>(1, 10, 1);
         spnCantidad.setEditable(true);
+
         HBox cantidadBox = new HBox(10, lblCantidad, spnCantidad);
         cantidadBox.setAlignment(Pos.CENTER_LEFT);
 
         Button btnAgregar = new Button("Agregar");
         Button btnCancelar = new Button("Cancelar");
+
         HBox botonesBox = new HBox(10, btnAgregar, btnCancelar);
         botonesBox.setAlignment(Pos.CENTER_RIGHT);
 
@@ -250,7 +269,6 @@ public class MozosController {
             }
 
             ConsumoMesa consumo = miRestaurante.getConsumosActivosPorMesa().get(mesa.getNumeroDeMesa());
-
             consumo.agregarItem(seleccionado, cantidad);
 
             stage.close();
@@ -260,6 +278,7 @@ public class MozosController {
 
         VBox layout = new VBox(15,
                 new Label("Seleccione un ítem del menú:"),
+                txtBuscar,
                 tablaItems,
                 cantidadBox,
                 botonesBox
@@ -267,7 +286,7 @@ public class MozosController {
         layout.setPadding(new Insets(15));
         layout.setStyle("-fx-background-color: #f8f9fa;");
 
-        stage.setScene(new Scene(layout, 500, 450));
+        stage.setScene(new Scene(layout, 500, 480));
         stage.showAndWait();
     }
 

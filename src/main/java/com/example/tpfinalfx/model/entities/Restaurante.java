@@ -30,9 +30,9 @@ public class Restaurante {
         this.consumoDelDia = new ConsumoDia();
         this.consumosActivosPorMesa = new HashMap<>();
         this.menu = new Gestora<>();
-        mesasFromJSON();
-        empleadosFromJSON();
-        menuFromJSON();
+        gestoraMesas.mesasFromJSON();
+        gestoraEmpleados.empleadosFromJSON();
+        menu.menuFromJSON();
     }
 
     public Gestora<Mesa> getGestoraMesas() {
@@ -75,93 +75,11 @@ public class Restaurante {
         this.menu = menu;
     }
 
-    public void menuFromJSON() {
-        JSONTokener tokener = JSONUtils.leer("menu.json");
-        if (tokener == null) {
-            return;
-        }
-        try {
-            JSONArray arreglo = new JSONArray(tokener);
-            for (int i = 0; i < arreglo.length(); i++) {
-                ItemMenu item = new ItemMenu();
-                JSONObject jsonMenu = arreglo.getJSONObject(i);
-                item.setId(jsonMenu.getInt("ID"));
-                item.setNombre(jsonMenu.getString("Nombre"));
-                item.setPrecio(jsonMenu.getDouble("Precio"));
-                item.setDescripcion(jsonMenu.getString("Descripcion"));
-                item.setCategoria(ETipoProducto.valueOf(jsonMenu.getString("Categoria")));
-                menu.agregar(item.getId(), item);
-            }
-        } catch (JSONException e) {
-            e.printStackTrace();
-        } catch (ElementoDuplicadoException e) {
-
-        }
-    }
-
-    public void mesasFromJSON() {
-        JSONTokener tokener = JSONUtils.leer("mesas.json");
-        if (tokener == null) {
-            return;
-        }
-        try {
-            JSONArray arreglo = new JSONArray(tokener);
-            for (int i = 0; i < arreglo.length(); i++) {
-                Mesa mesa = new Mesa();
-                JSONObject jsonMesa = arreglo.getJSONObject(i);
-                mesa.setNumeroDeMesa(jsonMesa.getInt("Numero de mesa"));
-                mesa.setDisponible(jsonMesa.getBoolean("Disponible"));
-                gestoraMesas.agregar(mesa.getNumeroDeMesa(), mesa);
-            }
-        } catch (JSONException e) {
-            e.printStackTrace();
-        } catch (ElementoDuplicadoException e) {
-
-        }
-    }
-
-    public void empleadosFromJSON() {
-        org.json.JSONTokener tokener = JSONUtils.leer("empleados.json");
-        if (tokener == null) {
-            return;
-        }
-        try {
-            JSONArray arreglo = new JSONArray(tokener);
-            for (int i = 0; i < arreglo.length(); i++) {
-                JSONObject empleadoJSON = arreglo.getJSONObject(i);
-                String puesto = empleadoJSON.getString("Puesto");
-                Empleado empleado = crearEmpleadoPorPuesto(puesto);
-
-                if (empleado != null) {
-                    empleado.setDni(empleadoJSON.getInt("DNI"));
-                    empleado.setNombre(empleadoJSON.getString("Nombre"));
-                    empleado.setApellido(empleadoJSON.getString("Apellido"));
-                    empleado.setPassword(empleadoJSON.getString("Contraseña"));
-                    empleado.setFechaDeNacimiento(LocalDate.parse(empleadoJSON.getString("Fecha de nacimiento"), DateTimeFormatter.ofPattern("yyyy-MM-dd")));
-                    gestoraEmpleados.agregar(empleado.getDni(), empleado);
-                }
-            }
-        } catch (JSONException e) {
-            e.printStackTrace();
-        } catch (ElementoDuplicadoException e) {
-
-        }
-    }
-
     public void agregar(ItemMenu item) {
         try {
             menu.agregar(item.getId(), item);
         } catch (ElementoDuplicadoException e) {
             mostrarAlertaElementoDuplicado();
-        }
-    }
-
-    public void eliminar(ItemMenu item) {
-        try {
-            menu.eliminar(item.getId());
-        }
-        catch (ElementoInexistenteException e) {
-            mostrarAlertaElementoInexistente();
         }
     }
 
@@ -179,6 +97,15 @@ public class Restaurante {
         }
         catch (ElementoDuplicadoException e) {
             mostrarAlertaElementoDuplicado();
+        }
+    }
+
+    public void eliminar(ItemMenu item) {
+        try {
+            menu.eliminar(item.getId());
+        }
+        catch (ElementoInexistenteException e) {
+            mostrarAlertaElementoInexistente();
         }
     }
 
@@ -274,18 +201,6 @@ public class Restaurante {
         JSONUtils.grabarJSON("mesas.json", mesasToArray());
     }
 
-    public Empleado crearEmpleadoPorPuesto(String puesto) {
-        switch (puesto) {
-            case "Mozo":
-                return new Mozo();
-            case "Cajero":
-                return new Cajero();
-            case "Gerente":
-                return new Gerente();
-            default:
-                return null;
-        }
-    }
 
     public JSONArray menuToArray() {
         JSONArray array = new JSONArray();
@@ -299,8 +214,7 @@ public class Restaurante {
         JSONUtils.grabarJSON("menu.json", menuToArray());
     }
 
-    public void terminarJornada()
-    {
+    public void terminarJornada() {
         for (Mesa mesa : gestoraMesas.obtenerValores()) {
             cerrarMesa(mesa.getNumeroDeMesa());
         }
@@ -319,7 +233,6 @@ public class Restaurante {
         }
         throw new PasswordInvalidaException("¡Contraseña inválida!");
     }
-
 
     private void mostrarAlertaElementoInexistente() {
         Alert alerta = new Alert(Alert.AlertType.INFORMATION);
