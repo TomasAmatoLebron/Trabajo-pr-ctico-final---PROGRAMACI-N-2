@@ -39,6 +39,10 @@ public class ConsumoDia {
         this.dia = dia;
     }
 
+    public double getGananciaTotal() {
+        return gananciaTotal;
+    }
+
     public void calcularGananciaDia() {
         for (ConsumoMesa consumo : consumos) {
             gananciaTotal += consumo.getPrecioTotal();
@@ -57,9 +61,6 @@ public class ConsumoDia {
 
     }
 
-    public double getGananciaTotal() {
-        return gananciaTotal;
-    }
 
     public void cerrarDia() {
         calcularGananciaDia();

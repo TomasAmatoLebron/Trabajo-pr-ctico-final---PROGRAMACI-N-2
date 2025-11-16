@@ -89,23 +89,6 @@ public class ConsumoMesa {
 
     }
 
-    @Override
-    public String toString() {
-
-        precioFinal();
-        return "Consumo:\n[ID = " + id + "\nMesa: " + mesa.getNumeroDeMesa() + "\nDetalle:\n" + mostrarConsumo() + "Precio total: " + precioTotal + "]";
-
-    }
-
-    public String mostrarConsumo() {
-
-        StringBuilder sb = new StringBuilder();
-        for (Map.Entry entrada : consumo.entrySet()) {
-            sb.append("        " + entrada.getKey().toString() + " (" + entrada.getValue() + ")\n");
-        }
-        return sb.toString();
-    }
-
     public JSONObject toJSON() {
         try {
             JSONObject json = new JSONObject();
