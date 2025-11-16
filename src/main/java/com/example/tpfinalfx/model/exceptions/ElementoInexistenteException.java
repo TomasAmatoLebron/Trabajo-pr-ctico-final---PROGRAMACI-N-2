@@ -1,7 +1,7 @@
 package com.example.tpfinalfx.model.exceptions;
 
-public class ElementoInexistenteException extends RuntimeException {
+public class ElementoInexistenteException extends Exception {
     public ElementoInexistenteException(String message) {
-        super(message);
+        super("¡El elemento ingresado no existe!");
     }
 }

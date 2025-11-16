@@ -94,6 +94,8 @@ public class Restaurante {
             }
         } catch (JSONException e) {
             e.printStackTrace();
+        } catch (ElementoDuplicadoException e) {
+
         }
     }
 
@@ -113,6 +115,8 @@ public class Restaurante {
             }
         } catch (JSONException e) {
             e.printStackTrace();
+        } catch (ElementoDuplicadoException e) {
+
         }
     }
 
@@ -139,6 +143,8 @@ public class Restaurante {
             }
         } catch (JSONException e) {
             e.printStackTrace();
+        } catch (ElementoDuplicadoException e) {
+
         }
     }
 

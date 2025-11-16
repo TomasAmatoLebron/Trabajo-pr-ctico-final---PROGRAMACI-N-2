@@ -2,6 +2,7 @@ package com.example.tpfinalfx;
 
 import com.example.tpfinalfx.model.entities.*;
 import com.example.tpfinalfx.model.enums.ETipoProducto;
+import com.example.tpfinalfx.model.exceptions.*;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -102,8 +103,6 @@ public class GerentesController {
         tabla.getColumns().addAll(colDni, colNombre, colApellido, colFecha, colPuesto);
         tabla.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
 
-
-// Barra de búsqueda
         TextField campoBusqueda = new TextField();
         campoBusqueda.setPromptText("Buscar por nombre...");
 
@@ -156,29 +155,65 @@ public class GerentesController {
         Button btnCancelar = new Button("Cancelar");
 
         btnAgregar.setOnAction(e -> {
-            String nombre = nombreField.getText();
-            String apellido = apellidoField.getText();
-            Integer dni = Integer.valueOf(dniField.getText());
-            LocalDate fecha = fechaPicker.getValue();
-            String password = passwordField.getText();
-            String puesto = puestoBox.getValue();
+            try {
+                String nombre = nombreField.getText();
+                String apellido = apellidoField.getText();
+                String dniStr = dniField.getText();
+                LocalDate fecha = fechaPicker.getValue();
+                String password = passwordField.getText();
+                String puesto = puestoBox.getValue();
 
-            Empleado nuevoEmpleado = null;
-            switch (puesto) {
-                case "Mozo":
-                    nuevoEmpleado = new Mozo(nombre, apellido, fecha, dni, password);
-                    break;
-                case "Cajero":
-                    nuevoEmpleado = new Cajero(nombre, apellido, fecha, dni, password);
-                    break;
-                case "Gerente":
-                    nuevoEmpleado = new Gerente(nombre, apellido, fecha, dni, password);
-                    break;
-            }
+                if (!nombre.matches("[a-zA-ZáéíóúÁÉÍÓÚñÑ]+"))
+                    throw new NombreInvalidoException("El nombre contiene caracteres inválidos.");
+
+                if (!apellido.matches("[a-zA-ZáéíóúÁÉÍÓÚñÑ ]+"))
+                    throw new NombreInvalidoException("El apellido contiene caracteres inválidos.");
+
+                if (!dniStr.matches("\\d+"))
+                    throw new NumberFormatException("El DNI ingresado no es válido.");
+
+                int dni = Integer.parseInt(dniStr);
+
+                if (fecha == null || fecha.isAfter(LocalDate.now()))
+                    throw new FechaInvalidaException();
+
+                if (password.length() > 12)
+                    throw new PasswordIncompatibleException();
+
+                if (puesto == null)
+                    throw new IllegalArgumentException("Debe seleccionar un puesto.");
+
+                Empleado nuevoEmpleado = null;
+                switch (puesto) {
+                    case "Mozo":
+                        nuevoEmpleado = new Mozo(nombre, apellido, fecha, dni, password);
+                        break;
+                    case "Cajero":
+                        nuevoEmpleado = new Cajero(nombre, apellido, fecha, dni, password);
+                        break;
+                    case "Gerente":
+                        nuevoEmpleado = new Gerente(nombre, apellido, fecha, dni, password);
+                        break;
+                }
+
                 miRestaurante.agregar(nuevoEmpleado);
-                popupStage.close();
                 miRestaurante.guardarEmpleados();
+                popupStage.close();
 
+                Alert ok = new Alert(Alert.AlertType.INFORMATION);
+                ok.setHeaderText("Éxito");
+                ok.setContentText("Empleado agregado exitosamente.");
+                ok.showAndWait();
+
+            } catch (ElementoDuplicadoException ex) {
+                mostrarError("Ya existe un empleado con el mismo DNI.");
+
+            } catch (NumberFormatException ex) {
+                mostrarError("El DNI debe contener solo números.");
+
+            } catch (NombreInvalidoException | PasswordIncompatibleException | FechaInvalidaException | IllegalArgumentException ex) {
+                mostrarError(ex.getMessage());
+            }
         });
 
         btnCancelar.setOnAction(e -> popupStage.close());
@@ -362,19 +397,53 @@ public class GerentesController {
         ventana.show();
 
         btnAgregar.setOnAction(e -> {
-            String nombre = nombreField.getText().trim();
-            double precio = Double.parseDouble(precioField.getText().trim());
-            String descripcion = descripcionField.getText().trim();
-            ETipoProducto categoria = categoriaBox.getValue();
+            try {
+                String nombre = nombreField.getText().trim();
+                String precioStr = precioField.getText().trim();
+                String descripcion = descripcionField.getText().trim();
+                ETipoProducto categoria = categoriaBox.getValue();
 
-            ItemMenu nuevo = new ItemMenu(nombre, precio, categoria, descripcion);
-            miRestaurante.agregar(nuevo);
-            miRestaurante.guardarMenu();
-            ventana.close();
+                if (nombre.isEmpty()) {
+                    throw new NombreInvalidoException("El nombre no puede estar vacío.");
+                }
+
+                double precio;
+                try {
+                    precio = Double.parseDouble(precioStr);
+                } catch (NumberFormatException exNum) {
+                    throw new PrecioInvalidoException();
+                }
+
+                if (precio < 0) {
+                    throw new PrecioInvalidoException();
+                }
+
+                if (categoria == null) {
+                    throw new IllegalArgumentException("Debe seleccionar una categoría.");
+                }
+
+                ItemMenu nuevo = new ItemMenu(nombre, precio, categoria, descripcion);
+                miRestaurante.agregar(nuevo);
+                miRestaurante.guardarMenu();
+
+                Alert ok = new Alert(Alert.AlertType.INFORMATION);
+                ok.setHeaderText("Éxito");
+                ok.setContentText("Item agregado exitosamente.");
+                ok.showAndWait();
+                ventana.close();
+
+            } catch (NombreInvalidoException | PrecioInvalidoException ex) {
+                mostrarError(ex.getMessage());
+
+            } catch (IllegalArgumentException ex) {
+                mostrarError(ex.getMessage());
+
+            }
         });
 
         btnCancelar.setOnAction(e -> ventana.close());
     }
+
 
     @FXML
     public void eliminarItemMenu() {
@@ -516,12 +585,28 @@ public class GerentesController {
         popupStage.show();
 
         btnAceptar.setOnAction(e -> {
-            String numeroTexto = campoNumero.getText().trim();
+            try {
+                String numeroTexto = campoNumero.getText().trim();
 
-            Mesa nuevaMesa = new Mesa(Integer.parseInt(numeroTexto));
-            miRestaurante.agregar(nuevaMesa);
-            popupStage.close();
-            miRestaurante.guardarMesas();
+                if (!numeroTexto.matches("\\d+")) {
+                    throw new MesaInvalidaException();
+                }
+
+                int numero = Integer.parseInt(numeroTexto);
+
+                if (numero < 0) {
+                    throw new MesaInvalidaException();
+                }
+
+                Mesa nuevaMesa = new Mesa(numero);
+                miRestaurante.agregar(nuevaMesa);
+                miRestaurante.guardarMesas();
+                popupStage.close();
+
+            } catch (MesaInvalidaException ex) {
+                mostrarError(ex.getMessage());
+
+            }
         });
 
         btnCancelar.setOnAction(e -> popupStage.close());
@@ -626,6 +711,13 @@ public class GerentesController {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    private void mostrarError(String msg) {
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setHeaderText("Error");
+        alert.setContentText(msg);
+        alert.showAndWait();
     }
 
 }
