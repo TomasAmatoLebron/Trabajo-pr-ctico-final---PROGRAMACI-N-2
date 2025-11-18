@@ -16,6 +16,7 @@ public class HelloApplication extends Application {
         scene.getStylesheets().add(BootstrapFX.bootstrapFXStylesheet());
         stage.setTitle("RestobarApp");
         stage.setScene(scene);
+        stage.centerOnScreen();
         stage.show();
     }
 
